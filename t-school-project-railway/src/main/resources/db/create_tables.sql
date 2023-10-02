@@ -1,14 +1,19 @@
-create table passenger
+create table "user"
 (
-    passenger_id integer     not null
+    user_id integer not null
         constraint passenger_pk
             primary key,
-    name         varchar(50) not null,
-    surname      varchar(50) not null,
-    birth_date   date        not null
+    username     varchar(50) not null
+        constraint passenger_pk2
+            unique,
+    password     varchar(50) not null,
+    role         varchar(50) not null,
+    name         varchar(50),
+    surname      varchar(50),
+    birth_date   date
 );
 
-alter table passenger
+alter table "user"
     owner to postgres;
 
 create table station
@@ -58,19 +63,6 @@ create table wagon
 alter table wagon
     owner to postgres;
 
-create table "user"
-(
-    user_id  integer     not null
-        constraint user_pk
-            primary key,
-    username varchar(50) not null,
-    password varchar(50) not null,
-    role     varchar(50) not null
-);
-
-alter table "user"
-    owner to postgres;
-
 create table seat
 (
     row          integer not null,
@@ -92,9 +84,9 @@ create table ticket
     ticket_id    integer not null
         constraint ticket_pk
             primary key,
-    passenger_id integer not null
-        constraint passenger_id_fk
-            references passenger,
+    user_id integer not null
+        constraint user_id_fk
+            references "user",
     seat_row     integer not null,
     seat_number  integer not null,
     wagon_number integer not null,

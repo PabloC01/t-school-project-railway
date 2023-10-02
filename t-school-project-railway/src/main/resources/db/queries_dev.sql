@@ -18,6 +18,6 @@ WHERE train_number = 100 and wagon_number = 2;
 
 -- List of passengers registered for a certain train(100)
 
-SELECT passenger.passenger_id, name, surname, birth_date
-FROM passenger INNER JOIN public.ticket t on passenger.passenger_id = t.passenger_id
+SELECT "user".user_id, name, surname, birth_date
+FROM "user" INNER JOIN public.ticket t on "user".user_id = t.user_id
 WHERE train_number = 100;
