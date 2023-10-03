@@ -34,18 +34,31 @@ create table train
             primary key,
     number            integer not null
         constraint "Train_pk2"
-            unique,
-    departure_station integer not null
-        constraint departure_station_fk
-            references station,
-    arrival_station   integer not null
-        constraint arrival_station_fk
-            references station,
-    departure_time    time    not null,
-    arrival_time      time    not null
+            unique
 );
 
 alter table train
+    owner to postgres;
+
+create table schedule
+(
+    schedule_id      integer not null
+        constraint schedule_pk
+            primary key,
+    train_number     integer not null
+        constraint train_number_fk
+            references train (number),
+    start_station_id integer not null
+        constraint start_station_fk
+            references station,
+    end_station_id   integer
+        constraint end_station_fk
+            references station,
+    departure_time   time    not null,
+    arrival_time     time    not null
+);
+
+alter table schedule
     owner to postgres;
 
 create table wagon
@@ -54,7 +67,7 @@ create table wagon
     train_number integer not null
         constraint train_number_fk
             references train (number),
-    rows         integer not null,
+    seat_count   integer not null,
     seat_per_row integer not null,
     constraint wagon_pk
         primary key (wagon_number, train_number)
@@ -84,13 +97,16 @@ create table ticket
     ticket_id    integer not null
         constraint ticket_pk
             primary key,
-    user_id integer not null
+    user_id      integer not null
         constraint user_id_fk
             references "user",
     seat_row     integer not null,
     seat_number  integer not null,
     wagon_number integer not null,
     train_number integer not null,
+    schedule_id  integer not null
+        constraint schedule_fk
+            references schedule,
     constraint seat_fk
         foreign key (seat_row, seat_number, wagon_number, train_number) references seat
 );
