@@ -78,13 +78,12 @@ alter table wagon
 
 create table seat
 (
-    row          integer not null,
     number       integer not null,
     wagon_number integer not null,
     train_number integer not null,
-    available    boolean not null,
+    description  varchar(50),
     constraint seat_pk
-        primary key (row, number, wagon_number, train_number),
+        primary key (number, wagon_number, train_number),
     constraint wagon_fk
         foreign key (wagon_number, train_number) references wagon
 );
@@ -100,7 +99,6 @@ create table ticket
     user_id      integer not null
         constraint user_id_fk
             references "user",
-    seat_row     integer not null,
     seat_number  integer not null,
     wagon_number integer not null,
     train_number integer not null,
@@ -108,7 +106,7 @@ create table ticket
         constraint schedule_fk
             references schedule,
     constraint seat_fk
-        foreign key (seat_row, seat_number, wagon_number, train_number) references seat
+        foreign key (seat_number, wagon_number, train_number) references seat
 );
 
 alter table ticket
