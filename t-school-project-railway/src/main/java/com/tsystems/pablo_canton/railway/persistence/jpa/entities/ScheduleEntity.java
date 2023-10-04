@@ -1,5 +1,6 @@
 package com.tsystems.pablo_canton.railway.persistence.jpa.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.sql.Time;
@@ -7,20 +8,12 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "schedule", schema = "public", catalog = "t-school-project-railway")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "ticketsByScheduleId"})
 public class ScheduleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "schedule_id")
     private Integer scheduleId;
-    @Basic
-    @Column(name = "train_number")
-    private Integer trainNumber;
-    @Basic
-    @Column(name = "start_station_id")
-    private Integer startStationId;
-    @Basic
-    @Column(name = "end_station_id")
-    private Integer endStationId;
     @Basic
     @Column(name = "departure_time")
     private Time departureTime;
@@ -47,30 +40,6 @@ public class ScheduleEntity {
         this.scheduleId = scheduleId;
     }
 
-    public Integer getTrainNumber() {
-        return trainNumber;
-    }
-
-    public void setTrainNumber(Integer trainNumber) {
-        this.trainNumber = trainNumber;
-    }
-
-    public Integer getStartStationId() {
-        return startStationId;
-    }
-
-    public void setStartStationId(Integer startStationId) {
-        this.startStationId = startStationId;
-    }
-
-    public Integer getEndStationId() {
-        return endStationId;
-    }
-
-    public void setEndStationId(Integer endStationId) {
-        this.endStationId = endStationId;
-    }
-
     public Time getDepartureTime() {
         return departureTime;
     }
@@ -95,10 +64,6 @@ public class ScheduleEntity {
         ScheduleEntity that = (ScheduleEntity) o;
 
         if (scheduleId != null ? !scheduleId.equals(that.scheduleId) : that.scheduleId != null) return false;
-        if (trainNumber != null ? !trainNumber.equals(that.trainNumber) : that.trainNumber != null) return false;
-        if (startStationId != null ? !startStationId.equals(that.startStationId) : that.startStationId != null)
-            return false;
-        if (endStationId != null ? !endStationId.equals(that.endStationId) : that.endStationId != null) return false;
         if (departureTime != null ? !departureTime.equals(that.departureTime) : that.departureTime != null)
             return false;
         if (arrivalTime != null ? !arrivalTime.equals(that.arrivalTime) : that.arrivalTime != null) return false;
@@ -109,9 +74,6 @@ public class ScheduleEntity {
     @Override
     public int hashCode() {
         int result = scheduleId != null ? scheduleId.hashCode() : 0;
-        result = 31 * result + (trainNumber != null ? trainNumber.hashCode() : 0);
-        result = 31 * result + (startStationId != null ? startStationId.hashCode() : 0);
-        result = 31 * result + (endStationId != null ? endStationId.hashCode() : 0);
         result = 31 * result + (departureTime != null ? departureTime.hashCode() : 0);
         result = 31 * result + (arrivalTime != null ? arrivalTime.hashCode() : 0);
         return result;
