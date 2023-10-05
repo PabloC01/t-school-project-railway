@@ -2,11 +2,16 @@ package com.tsystems.pablo_canton.railway.persistence.jpa.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Collection;
+import java.util.Objects;
 
 @Entity
-@Table(name = "train", schema = "public", catalog = "t-school-project-railway")
+@Getter
+@Setter
+@Table(name = "train")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "schedulesByNumber", "wagonsByNumber"})
 public class TrainEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,22 +26,6 @@ public class TrainEntity {
     @OneToMany(mappedBy = "trainByNumber")
     private Collection<WagonEntity> wagonsByNumber;
 
-    public Integer getTrainId() {
-        return trainId;
-    }
-
-    public void setTrainId(Integer trainId) {
-        this.trainId = trainId;
-    }
-
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -44,32 +33,18 @@ public class TrainEntity {
 
         TrainEntity that = (TrainEntity) o;
 
-        if (trainId != null ? !trainId.equals(that.trainId) : that.trainId != null) return false;
-        if (number != null ? !number.equals(that.number) : that.number != null) return false;
-
-        return true;
+        if (!Objects.equals(trainId, that.trainId)) return false;
+        if (!Objects.equals(number, that.number)) return false;
+        if (!Objects.equals(schedulesByNumber, that.schedulesByNumber)) return false;
+        return Objects.equals(wagonsByNumber, that.wagonsByNumber);
     }
 
     @Override
     public int hashCode() {
         int result = trainId != null ? trainId.hashCode() : 0;
         result = 31 * result + (number != null ? number.hashCode() : 0);
+        result = 31 * result + (schedulesByNumber != null ? schedulesByNumber.hashCode() : 0);
+        result = 31 * result + (wagonsByNumber != null ? wagonsByNumber.hashCode() : 0);
         return result;
-    }
-
-    public Collection<ScheduleEntity> getSchedulesByNumber() {
-        return schedulesByNumber;
-    }
-
-    public void setSchedulesByNumber(Collection<ScheduleEntity> schedulesByNumber) {
-        this.schedulesByNumber = schedulesByNumber;
-    }
-
-    public Collection<WagonEntity> getWagonsByNumber() {
-        return wagonsByNumber;
-    }
-
-    public void setWagonsByNumber(Collection<WagonEntity> wagonsByNumber) {
-        this.wagonsByNumber = wagonsByNumber;
     }
 }

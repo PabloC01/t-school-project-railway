@@ -2,11 +2,16 @@ package com.tsystems.pablo_canton.railway.persistence.jpa.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Collection;
+import java.util.Objects;
 
 @Entity
-@Table(name = "wagon", schema = "public", catalog = "t-school-project-railway")
+@Getter
+@Setter
+@Table(name = "wagon")
 @IdClass(WagonEntityPK.class)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "seats"})
 public class WagonEntity {
@@ -30,38 +35,6 @@ public class WagonEntity {
     @JoinColumn(name = "train_number", referencedColumnName = "number", nullable = false)
     private TrainEntity trainByNumber;
 
-    public Integer getWagonNumber() {
-        return wagonNumber;
-    }
-
-    public void setWagonNumber(Integer wagonNumber) {
-        this.wagonNumber = wagonNumber;
-    }
-
-    public Integer getTrainNumber() {
-        return trainNumber;
-    }
-
-    public void setTrainNumber(Integer trainNumber) {
-        this.trainNumber = trainNumber;
-    }
-
-    public Integer getSeatCount() {
-        return seatCount;
-    }
-
-    public void setSeatCount(Integer seatCount) {
-        this.seatCount = seatCount;
-    }
-
-    public Integer getSeatPerRow() {
-        return seatPerRow;
-    }
-
-    public void setSeatPerRow(Integer seatPerRow) {
-        this.seatPerRow = seatPerRow;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -69,12 +42,12 @@ public class WagonEntity {
 
         WagonEntity that = (WagonEntity) o;
 
-        if (wagonNumber != null ? !wagonNumber.equals(that.wagonNumber) : that.wagonNumber != null) return false;
-        if (trainNumber != null ? !trainNumber.equals(that.trainNumber) : that.trainNumber != null) return false;
-        if (seatCount != null ? !seatCount.equals(that.seatCount) : that.seatCount != null) return false;
-        if (seatPerRow != null ? !seatPerRow.equals(that.seatPerRow) : that.seatPerRow != null) return false;
-
-        return true;
+        if (!Objects.equals(wagonNumber, that.wagonNumber)) return false;
+        if (!Objects.equals(trainNumber, that.trainNumber)) return false;
+        if (!Objects.equals(seatCount, that.seatCount)) return false;
+        if (!Objects.equals(seatPerRow, that.seatPerRow)) return false;
+        if (!Objects.equals(seats, that.seats)) return false;
+        return Objects.equals(trainByNumber, that.trainByNumber);
     }
 
     @Override
@@ -83,22 +56,8 @@ public class WagonEntity {
         result = 31 * result + (trainNumber != null ? trainNumber.hashCode() : 0);
         result = 31 * result + (seatCount != null ? seatCount.hashCode() : 0);
         result = 31 * result + (seatPerRow != null ? seatPerRow.hashCode() : 0);
+        result = 31 * result + (seats != null ? seats.hashCode() : 0);
+        result = 31 * result + (trainNumber != null ? trainByNumber.hashCode() : 0);
         return result;
-    }
-
-    public Collection<SeatEntity> getSeats() {
-        return seats;
-    }
-
-    public void setSeats(Collection<SeatEntity> seats) {
-        this.seats = seats;
-    }
-
-    public TrainEntity getTrainByNumber() {
-        return trainByNumber;
-    }
-
-    public void setTrainByNumber(TrainEntity trainByNumber) {
-        this.trainByNumber = trainByNumber;
     }
 }

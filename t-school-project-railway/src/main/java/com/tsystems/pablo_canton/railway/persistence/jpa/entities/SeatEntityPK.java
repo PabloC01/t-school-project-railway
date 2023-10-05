@@ -4,9 +4,14 @@ import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.Objects;
 
+@Getter
+@Setter
 public class SeatEntityPK implements Serializable {
     @Column(name = "number")
     @Id
@@ -21,30 +26,6 @@ public class SeatEntityPK implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer trainNumber;
 
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
-
-    public Integer getWagonNumber() {
-        return wagonNumber;
-    }
-
-    public void setWagonNumber(Integer wagonNumber) {
-        this.wagonNumber = wagonNumber;
-    }
-
-    public Integer getTrainNumber() {
-        return trainNumber;
-    }
-
-    public void setTrainNumber(Integer trainNumber) {
-        this.trainNumber = trainNumber;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -52,11 +33,9 @@ public class SeatEntityPK implements Serializable {
 
         SeatEntityPK that = (SeatEntityPK) o;
 
-        if (number != null ? !number.equals(that.number) : that.number != null) return false;
-        if (wagonNumber != null ? !wagonNumber.equals(that.wagonNumber) : that.wagonNumber != null) return false;
-        if (trainNumber != null ? !trainNumber.equals(that.trainNumber) : that.trainNumber != null) return false;
-
-        return true;
+        if (!Objects.equals(number, that.number)) return false;
+        if (!Objects.equals(wagonNumber, that.wagonNumber)) return false;
+        return Objects.equals(trainNumber, that.trainNumber);
     }
 
     @Override

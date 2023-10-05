@@ -13,9 +13,6 @@ create table "user"
     birth_date   date
 );
 
-alter table "user"
-    owner to postgres;
-
 create table station
 (
     station_id integer     not null
@@ -23,9 +20,6 @@ create table station
             primary key,
     name       varchar(50) not null
 );
-
-alter table station
-    owner to postgres;
 
 create table train
 (
@@ -37,29 +31,23 @@ create table train
             unique
 );
 
-alter table train
-    owner to postgres;
-
 create table schedule
 (
-    schedule_id      integer not null
+    schedule_id      integer   not null
         constraint schedule_pk
             primary key,
-    train_number     integer not null
+    train_number     integer   not null
         constraint train_number_fk
             references train (number),
-    start_station_id integer not null
+    start_station_id integer   not null
         constraint start_station_fk
             references station,
     end_station_id   integer
         constraint end_station_fk
             references station,
-    departure_time   time    not null,
-    arrival_time     time    not null
+    departure_time   timestamp not null,
+    arrival_time     timestamp not null
 );
-
-alter table schedule
-    owner to postgres;
 
 create table wagon
 (
@@ -73,9 +61,6 @@ create table wagon
         primary key (wagon_number, train_number)
 );
 
-alter table wagon
-    owner to postgres;
-
 create table seat
 (
     number       integer not null,
@@ -87,9 +72,6 @@ create table seat
     constraint wagon_fk
         foreign key (wagon_number, train_number) references wagon
 );
-
-alter table seat
-    owner to postgres;
 
 create table ticket
 (
@@ -108,8 +90,3 @@ create table ticket
     constraint seat_fk
         foreign key (seat_number, wagon_number, train_number) references seat
 );
-
-alter table ticket
-    owner to postgres;
-
-

@@ -2,12 +2,18 @@ package com.tsystems.pablo_canton.railway.persistence.jpa.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Objects;
 
 @Entity
-@Table(name = "schedule", schema = "public", catalog = "t-school-project-railway")
+@Getter
+@Setter
+@Table(name = "schedule")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "ticketsByScheduleId"})
 public class ScheduleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,10 +22,10 @@ public class ScheduleEntity {
     private Integer scheduleId;
     @Basic
     @Column(name = "departure_time")
-    private Time departureTime;
+    private LocalDateTime departureTime;
     @Basic
     @Column(name = "arrival_time")
-    private Time arrivalTime;
+    private LocalDateTime  arrivalTime;
     @ManyToOne
     @JoinColumn(name = "train_number", referencedColumnName = "number", nullable = false)
     private TrainEntity trainByNumber;
@@ -32,30 +38,6 @@ public class ScheduleEntity {
     @OneToMany(mappedBy = "scheduleByScheduleId")
     private Collection<TicketEntity> ticketsByScheduleId;
 
-    public Integer getScheduleId() {
-        return scheduleId;
-    }
-
-    public void setScheduleId(Integer scheduleId) {
-        this.scheduleId = scheduleId;
-    }
-
-    public Time getDepartureTime() {
-        return departureTime;
-    }
-
-    public void setDepartureTime(Time departureTime) {
-        this.departureTime = departureTime;
-    }
-
-    public Time getArrivalTime() {
-        return arrivalTime;
-    }
-
-    public void setArrivalTime(Time arrivalTime) {
-        this.arrivalTime = arrivalTime;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -63,12 +45,14 @@ public class ScheduleEntity {
 
         ScheduleEntity that = (ScheduleEntity) o;
 
-        if (scheduleId != null ? !scheduleId.equals(that.scheduleId) : that.scheduleId != null) return false;
-        if (departureTime != null ? !departureTime.equals(that.departureTime) : that.departureTime != null)
+        if (!Objects.equals(scheduleId, that.scheduleId)) return false;
+        if (!Objects.equals(departureTime, that.departureTime))
             return false;
-        if (arrivalTime != null ? !arrivalTime.equals(that.arrivalTime) : that.arrivalTime != null) return false;
-
-        return true;
+        if (!Objects.equals(arrivalTime, that.arrivalTime)) return false;
+        if (!Objects.equals(trainByNumber, that.trainByNumber)) return false;
+        if (!Objects.equals(stationByStartStationId, that.stationByStartStationId)) return false;
+        if (!Objects.equals(stationByEndStationId, that.stationByEndStationId)) return false;
+        return Objects.equals(ticketsByScheduleId, that.ticketsByScheduleId);
     }
 
     @Override
@@ -76,38 +60,10 @@ public class ScheduleEntity {
         int result = scheduleId != null ? scheduleId.hashCode() : 0;
         result = 31 * result + (departureTime != null ? departureTime.hashCode() : 0);
         result = 31 * result + (arrivalTime != null ? arrivalTime.hashCode() : 0);
+        result = 31 * result + (trainByNumber != null ? trainByNumber.hashCode() : 0);
+        result = 31 * result + (stationByStartStationId != null ? stationByStartStationId.hashCode() : 0);
+        result = 31 * result + (stationByEndStationId != null ? stationByEndStationId.hashCode() : 0);
+        result = 31 * result + (ticketsByScheduleId != null ? ticketsByScheduleId.hashCode() : 0);
         return result;
-    }
-
-    public TrainEntity getTrainByNumber() {
-        return trainByNumber;
-    }
-
-    public void setTrainByNumber(TrainEntity trainByNumber) {
-        this.trainByNumber = trainByNumber;
-    }
-
-    public StationEntity getStationByStartStationId() {
-        return stationByStartStationId;
-    }
-
-    public void setStationByStartStationId(StationEntity stationByStartStationId) {
-        this.stationByStartStationId = stationByStartStationId;
-    }
-
-    public StationEntity getStationByEndStationId() {
-        return stationByEndStationId;
-    }
-
-    public void setStationByEndStationId(StationEntity stationByEndStationId) {
-        this.stationByEndStationId = stationByEndStationId;
-    }
-
-    public Collection<TicketEntity> getTicketsByScheduleId() {
-        return ticketsByScheduleId;
-    }
-
-    public void setTicketsByScheduleId(Collection<TicketEntity> ticketsByScheduleId) {
-        this.ticketsByScheduleId = ticketsByScheduleId;
     }
 }

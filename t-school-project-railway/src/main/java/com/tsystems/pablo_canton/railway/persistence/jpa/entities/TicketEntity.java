@@ -1,9 +1,15 @@
 package com.tsystems.pablo_canton.railway.persistence.jpa.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Objects;
 
 @Entity
-@Table(name = "ticket", schema = "public", catalog = "t-school-project-railway")
+@Getter
+@Setter
+@Table(name = "ticket")
 public class TicketEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -19,14 +25,6 @@ public class TicketEntity {
     @JoinColumn(name = "schedule_id", referencedColumnName = "schedule_id", nullable = false)
     private ScheduleEntity scheduleByScheduleId;
 
-    public Integer getTicketId() {
-        return ticketId;
-    }
-
-    public void setTicketId(Integer ticketId) {
-        this.ticketId = ticketId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -34,39 +32,19 @@ public class TicketEntity {
 
         TicketEntity that = (TicketEntity) o;
 
-        if (ticketId != null ? !ticketId.equals(that.ticketId) : that.ticketId != null) return false;
-
-        return true;
+        if (!Objects.equals(ticketId, that.ticketId)) return false;
+        if (!Objects.equals(userByUserId, that.userByUserId)) return false;
+        if (!Objects.equals(seat, that.seat)) return false;
+        return Objects.equals(scheduleByScheduleId, that.scheduleByScheduleId);
     }
 
     @Override
     public int hashCode() {
         int result = ticketId != null ? ticketId.hashCode() : 0;
+        result = 31 * result + (userByUserId != null ? userByUserId.hashCode() : 0);
+        result = 31 * result + (seat != null ? seat.hashCode() : 0);
+        result = 31 * result + (scheduleByScheduleId != null ? scheduleByScheduleId.hashCode() : 0);
 
         return result;
-    }
-
-    public UserEntity getUserByUserId() {
-        return userByUserId;
-    }
-
-    public void setUserByUserId(UserEntity userByUserId) {
-        this.userByUserId = userByUserId;
-    }
-
-    public SeatEntity getSeat() {
-        return seat;
-    }
-
-    public void setSeat(SeatEntity seat) {
-        this.seat = seat;
-    }
-
-    public ScheduleEntity getScheduleByScheduleId() {
-        return scheduleByScheduleId;
-    }
-
-    public void setScheduleByScheduleId(ScheduleEntity scheduleByScheduleId) {
-        this.scheduleByScheduleId = scheduleByScheduleId;
     }
 }

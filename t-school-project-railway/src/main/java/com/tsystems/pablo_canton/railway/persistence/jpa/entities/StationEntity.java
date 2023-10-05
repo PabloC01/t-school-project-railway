@@ -2,11 +2,16 @@ package com.tsystems.pablo_canton.railway.persistence.jpa.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Collection;
+import java.util.Objects;
 
 @Entity
-@Table(name = "station", schema = "public", catalog = "t-school-project-railway")
+@Getter
+@Setter
+@Table(name = "station")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "schedulesByStationId", "schedulesByStationId_0"})
 public class StationEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,22 +26,6 @@ public class StationEntity {
     @OneToMany(mappedBy = "stationByEndStationId")
     private Collection<ScheduleEntity> schedulesByStationId_0;
 
-    public Integer getStationId() {
-        return stationId;
-    }
-
-    public void setStationId(Integer stationId) {
-        this.stationId = stationId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -44,32 +33,18 @@ public class StationEntity {
 
         StationEntity that = (StationEntity) o;
 
-        if (stationId != null ? !stationId.equals(that.stationId) : that.stationId != null) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-
-        return true;
+        if (!Objects.equals(stationId, that.stationId)) return false;
+        if (!Objects.equals(name, that.name)) return false;
+        if (!Objects.equals(schedulesByStationId, that.schedulesByStationId)) return false;
+        return Objects.equals(schedulesByStationId_0, that.schedulesByStationId_0);
     }
 
     @Override
     public int hashCode() {
         int result = stationId != null ? stationId.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (schedulesByStationId != null ? schedulesByStationId.hashCode() : 0);
+        result = 31 * result + (schedulesByStationId_0 != null ? schedulesByStationId_0.hashCode() : 0);
         return result;
-    }
-
-    public Collection<ScheduleEntity> getSchedulesByStationId() {
-        return schedulesByStationId;
-    }
-
-    public void setSchedulesByStationId(Collection<ScheduleEntity> schedulesByStationId) {
-        this.schedulesByStationId = schedulesByStationId;
-    }
-
-    public Collection<ScheduleEntity> getSchedulesByStationId_0() {
-        return schedulesByStationId_0;
-    }
-
-    public void setSchedulesByStationId_0(Collection<ScheduleEntity> schedulesByStationId_0) {
-        this.schedulesByStationId_0 = schedulesByStationId_0;
     }
 }
