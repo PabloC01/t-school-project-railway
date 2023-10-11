@@ -1,10 +1,10 @@
-create table "user"
+create table users
 (
-    user_id integer not null
-        constraint passenger_pk
+    user_id integer generated always as identity
+        constraint user_pk
             primary key,
     username     varchar(50) not null
-        constraint passenger_pk2
+        constraint user_pk2
             unique,
     password     varchar(50) not null,
     role         varchar(50) not null,
@@ -13,17 +13,17 @@ create table "user"
     birth_date   date
 );
 
-create table station
+create table stations
 (
-    station_id integer     not null
+    station_id integer     generated always as identity
         constraint station_pk
             primary key,
     name       varchar(50) not null
 );
 
-create table train
+create table trains
 (
-    train_id          integer not null
+    train_id          integer generated always as identity
         constraint train_pk
             primary key,
     number            integer not null
@@ -31,37 +31,37 @@ create table train
             unique
 );
 
-create table schedule
+create table schedules
 (
-    schedule_id      integer   not null
+    schedule_id      integer   generated always as identity
         constraint schedule_pk
             primary key,
     train_number     integer   not null
         constraint train_number_fk
-            references train (number),
+            references trains (number),
     start_station_id integer   not null
         constraint start_station_fk
-            references station,
+            references stations,
     end_station_id   integer
         constraint end_station_fk
-            references station,
+            references stations,
     departure_time   timestamp not null,
     arrival_time     timestamp not null
 );
 
-create table wagon
+create table wagons
 (
     wagon_number integer not null,
     train_number integer not null
         constraint train_number_fk
-            references train (number),
+            references trains (number),
     seat_count   integer not null,
     seat_per_row integer not null,
     constraint wagon_pk
         primary key (wagon_number, train_number)
 );
 
-create table seat
+create table seats
 (
     number       integer not null,
     wagon_number integer not null,
@@ -70,23 +70,23 @@ create table seat
     constraint seat_pk
         primary key (number, wagon_number, train_number),
     constraint wagon_fk
-        foreign key (wagon_number, train_number) references wagon
+        foreign key (wagon_number, train_number) references wagons
 );
 
-create table ticket
+create table tickets
 (
-    ticket_id    integer not null
+    ticket_id    integer generated always as identity
         constraint ticket_pk
             primary key,
     user_id      integer not null
         constraint user_id_fk
-            references "user",
+            references users,
     seat_number  integer not null,
     wagon_number integer not null,
     train_number integer not null,
     schedule_id  integer not null
         constraint schedule_fk
-            references schedule,
+            references schedules,
     constraint seat_fk
-        foreign key (seat_number, wagon_number, train_number) references seat
+        foreign key (seat_number, wagon_number, train_number) references seats
 );

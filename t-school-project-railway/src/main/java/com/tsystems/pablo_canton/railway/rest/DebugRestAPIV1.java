@@ -1,7 +1,7 @@
 package com.tsystems.pablo_canton.railway.rest;
 
 import com.tsystems.pablo_canton.railway.business.api.debug.IDebugBusinessService;
-import com.tsystems.pablo_canton.railway.persistence.dto.DebugResponse;
+import com.tsystems.pablo_canton.railway.business.dto.DebugResponse;
 import com.tsystems.pablo_canton.railway.persistence.jpa.entities.ScheduleEntity;
 import com.tsystems.pablo_canton.railway.persistence.jpa.entities.StationEntity;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.tsystems.pablo_canton.railway.persistence.dto;
+package com.tsystems.pablo_canton.railway.business.dto;
 
 import lombok.*;
 
