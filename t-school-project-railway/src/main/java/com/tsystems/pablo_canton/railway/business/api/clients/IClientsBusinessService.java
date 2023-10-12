@@ -7,9 +7,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IClientsBusinessService {
-    List<ScheduleDTO> getSchedules(Integer station_a_id, Integer station_b_id, LocalDateTime start_time, LocalDateTime end_time);
+    List<ScheduleDTO> getSchedules(Integer stationAId, Integer stationBId, LocalDateTime startTime, LocalDateTime endTime);
 
-    List<ScheduleDTO> getSchedulesByStationId(Integer station_id);
+    List<ScheduleDTO> getSchedulesByStationId(Integer stationId);
 
     TicketDTO createTicket(TicketDTO dto);
+
+    List<Boolean> getEmptySeats(Integer trainNumber, Integer wagonNumber, Integer scheduleId);
 }

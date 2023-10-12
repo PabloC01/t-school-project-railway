@@ -1,4 +1,4 @@
-package com.tsystems.pablo_canton.railway.business;
+package com.tsystems.pablo_canton.railway.utils;
 
 import com.tsystems.pablo_canton.railway.business.dto.ScheduleDTO;
 import com.tsystems.pablo_canton.railway.business.dto.TicketDTO;

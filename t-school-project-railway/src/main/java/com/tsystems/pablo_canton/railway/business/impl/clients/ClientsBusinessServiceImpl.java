@@ -1,6 +1,7 @@
 package com.tsystems.pablo_canton.railway.business.impl.clients;
 
-import com.tsystems.pablo_canton.railway.business.Converter;
+import com.tsystems.pablo_canton.railway.business.dto.SeatDTO;
+import com.tsystems.pablo_canton.railway.utils.Converter;
 import com.tsystems.pablo_canton.railway.business.api.clients.IClientsBusinessService;
 import com.tsystems.pablo_canton.railway.business.dto.ScheduleDTO;
 import com.tsystems.pablo_canton.railway.business.dto.TicketDTO;
@@ -26,42 +27,34 @@ public class ClientsBusinessServiceImpl implements IClientsBusinessService {
 
     private final Converter converter;
     @Override
-    public List<ScheduleDTO> getSchedules(Integer station_a_id, Integer station_b_id, LocalDateTime start_time, LocalDateTime end_time) {
-        return clientsDataService.findSchedules(station_a_id, station_b_id, start_time, end_time).stream()
+    public List<ScheduleDTO> getSchedules(Integer stationAId, Integer stationBId, LocalDateTime startTime, LocalDateTime endTime) {
+        return clientsDataService.findSchedules(stationAId, stationBId, startTime, endTime).stream()
                 .map(converter::createScheduleDTO)
                 .toList();
     }
 
     @Override
-    public List<ScheduleDTO> getSchedulesByStationId(Integer station_id) {
-        return clientsDataService.findSchedulesByStationId(station_id).stream()
+    public List<ScheduleDTO> getSchedulesByStationId(Integer stationId) {
+        return clientsDataService.findSchedulesByStationId(stationId).stream()
                 .map(converter::createScheduleDTO)
                 .toList();
     }
 
     @Override
     public TicketDTO createTicket(TicketDTO dto) {
-        TicketEntity ticket = new TicketEntity();
-
-        SeatEntity seat = clientsDataService.loadSeat(dto.getSeat().getNumber(), dto.getSeat().getWagonNumber(), dto.getSeat().getTrainNumber());
-        List<ScheduleEntity> seat_schedules = clientsDataService.findSeatTicketsSchedules(seat);
+        SeatDTO seatDTO = dto.getSeat();
+        SeatEntity seat = clientsDataService.loadSeat(seatDTO.getNumber(), seatDTO.getWagonNumber(), seatDTO.getTrainNumber());
         ScheduleEntity schedule = clientsDataService.loadSchedule(dto.getScheduleByScheduleId().getScheduleId());
 
-        if(seat_schedules.contains(schedule)){
+        if(clientsDataService.isSeatBusy(seat, schedule)){
             throw new SeatNotFreeException("Seat not free {" + dto.getSeat().getNumber() + "," + dto.getSeat().getWagonNumber() + "," + dto.getSeat().getTrainNumber() + "}");
         }
 
-        ticket.setSeat(seat);
-        ticket.setScheduleByScheduleId(schedule);
-
         UserEntity user = clientsDataService.loadUser(dto.getUserByUserId().getUserId());
-        List<UserEntity> schedule_users = clientsDataService.findScheduleUsers(schedule.getScheduleId());
 
-        if(schedule_users.contains(user)){
+        if(clientsDataService.userAlreadyHaveTicket(user, schedule.getScheduleId())){
             throw new UserAlreadyHaveTicketException("User already have a ticket for the schedule " + user.getUserId());
         }
-
-        ticket.setUserByUserId(user);
 
         LocalDateTime departure_time = schedule.getDepartureTime();
 
@@ -69,6 +62,16 @@ public class ClientsBusinessServiceImpl implements IClientsBusinessService {
             throw new DepartureTimeTooLateException("Too late before departure of the train");
         }
 
+        TicketEntity ticket = new TicketEntity();
+        ticket.setSeat(seat);
+        ticket.setScheduleByScheduleId(schedule);
+        ticket.setUserByUserId(user);
+
         return converter.createTicketDto(clientsDataService.createTicket(ticket));
+    }
+
+    @Override
+    public List<Boolean> getEmptySeats(Integer trainNumber, Integer wagonNumber, Integer scheduleId) {
+        return clientsDataService.findEmptySeats(trainNumber, wagonNumber, scheduleId);
     }
 }

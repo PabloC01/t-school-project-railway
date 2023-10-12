@@ -1,27 +1,28 @@
 package com.tsystems.pablo_canton.railway.persistence.api.clients;
 
-import com.tsystems.pablo_canton.railway.persistence.jpa.entities.ScheduleEntity;
-import com.tsystems.pablo_canton.railway.persistence.jpa.entities.SeatEntity;
-import com.tsystems.pablo_canton.railway.persistence.jpa.entities.TicketEntity;
-import com.tsystems.pablo_canton.railway.persistence.jpa.entities.UserEntity;
+import com.tsystems.pablo_canton.railway.persistence.jpa.entities.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IClientsDataService {
-    List<ScheduleEntity> findSchedules(Integer station_a_id, Integer station_b_id, LocalDateTime start_time, LocalDateTime end_time);
+    List<ScheduleEntity> findSchedules(Integer stationAId, Integer stationBId, LocalDateTime startTime, LocalDateTime endTime);
 
-    List<ScheduleEntity> findSchedulesByStationId(Integer station_id);
+    List<ScheduleEntity> findSchedulesByStationId(Integer stationId);
 
     TicketEntity createTicket(TicketEntity ticket);
 
-    List<ScheduleEntity> findSeatTicketsSchedules(SeatEntity seat);
+    List<Boolean> findEmptySeats(Integer trainNumber, Integer wagonNumber, Integer scheduleId);
 
-    List<UserEntity> findScheduleUsers(Integer schedule_id);
+    boolean isSeatBusy(SeatEntity seat, ScheduleEntity schedule);
 
-    SeatEntity loadSeat(Integer number, Integer wagon_number, Integer train_number);
+    boolean userAlreadyHaveTicket(UserEntity user, Integer scheduleId);
+
+    SeatEntity loadSeat(Integer number, Integer wagonNumber, Integer trainNumber);
 
     UserEntity loadUser(Integer id);
 
     ScheduleEntity loadSchedule(Integer id);
+
+    WagonEntity loadWagon(Integer trainNumber, Integer wagonNumber);
 }

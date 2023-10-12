@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -26,14 +29,16 @@ public class ClientsDataServiceImpl implements IClientsDataService {
 
     private final SeatRepository seatRepository;
 
+    private final WagonRepository wagonRepository;
+
     @Override
-    public List<ScheduleEntity> findSchedules(Integer station_start_id, Integer station_end_id, LocalDateTime start_time, LocalDateTime end_time) {
-        return queryRepository.findSchedules(station_start_id, station_end_id, start_time, end_time);
+    public List<ScheduleEntity> findSchedules(Integer stationAId, Integer stationBId, LocalDateTime startTime, LocalDateTime endTime) {
+        return queryRepository.findSchedules(stationAId, stationBId, startTime, endTime);
     }
 
     @Override
-    public List<ScheduleEntity> findSchedulesByStationId(Integer station_id) {
-        return queryRepository.findSchedulesByStationId(station_id);
+    public List<ScheduleEntity> findSchedulesByStationId(Integer stationId) {
+        return queryRepository.findSchedulesByStationId(stationId);
     }
 
     @Override
@@ -42,23 +47,39 @@ public class ClientsDataServiceImpl implements IClientsDataService {
     }
 
     @Override
-    public List<ScheduleEntity> findSeatTicketsSchedules(SeatEntity seat) {
-        return queryRepository.findSeatTicketsSchedules(seat.getNumber(), seat.getWagonNumber(), seat.getTrainNumber());
+    public List<Boolean> findEmptySeats(Integer trainNumber, Integer wagonNumber, Integer scheduleId) {
+        List<SeatEntity> busySeats = queryRepository.findSeatsByScheduleAndWagon(trainNumber, wagonNumber, scheduleId);
+        WagonEntity wagon = loadWagon(trainNumber, wagonNumber);
+
+        List<Boolean> emptySeats = new ArrayList<>(Collections.nCopies(wagon.getSeatCount(), true));
+
+        for(SeatEntity seat : busySeats){
+            emptySeats.set(seat.getNumber()-1, false);
+        }
+
+        return emptySeats;
     }
 
     @Override
-    public List<UserEntity> findScheduleUsers(Integer schedule_id) {
-        return queryRepository.findScheduleUsers(schedule_id);
+    public boolean isSeatBusy(SeatEntity seat, ScheduleEntity schedule) {
+        List<ScheduleEntity> seatSchedules = queryRepository.findSeatTicketsSchedules(seat.getNumber(), seat.getWagonNumber(), seat.getTrainNumber());
+        return seatSchedules.contains(schedule);
     }
 
     @Override
-    public SeatEntity loadSeat(Integer number, Integer wagon_number, Integer train_number) {
+    public boolean userAlreadyHaveTicket(UserEntity user, Integer scheduleId) {
+        List<UserEntity> scheduleUsers = queryRepository.findScheduleUsers(scheduleId);
+        return scheduleUsers.contains(user);
+    }
+
+    @Override
+    public SeatEntity loadSeat(Integer number, Integer wagonNumber, Integer trainNumber) {
         SeatEntityPK seatEntityPK = new SeatEntityPK();
         seatEntityPK.setNumber(number);
-        seatEntityPK.setWagonNumber(wagon_number);
-        seatEntityPK.setTrainNumber(train_number);
+        seatEntityPK.setWagonNumber(wagonNumber);
+        seatEntityPK.setTrainNumber(trainNumber);
         return seatRepository.findById(seatEntityPK)
-                .orElseThrow(() -> new ResourceNotFoundException("Seat not found {" + number + "," + wagon_number + "," + train_number + "}"));
+                .orElseThrow(() -> new ResourceNotFoundException("Seat not found {" + number + "," + wagonNumber + "," + trainNumber + "}"));
     }
 
     @Override
@@ -71,5 +92,14 @@ public class ClientsDataServiceImpl implements IClientsDataService {
     public ScheduleEntity loadSchedule(Integer id) {
         return scheduleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Schedule not found " + id));
+    }
+
+    @Override
+    public WagonEntity loadWagon(Integer trainNumber, Integer wagonNumber) {
+        WagonEntityPK wagonEntityPK = new WagonEntityPK();
+        wagonEntityPK.setWagonNumber(wagonNumber);
+        wagonEntityPK.setTrainNumber(trainNumber);
+        return wagonRepository.findById(wagonEntityPK)
+                .orElseThrow(() -> new ResourceNotFoundException("Wagon not found {" + trainNumber + "," + wagonNumber + "}"));
     }
 }
