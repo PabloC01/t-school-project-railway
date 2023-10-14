@@ -1,8 +1,6 @@
 package com.tsystems.pablo_canton.railway.persistence.jpa.entities;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
@@ -13,11 +11,9 @@ import java.util.Objects;
 public class WagonEntityPK implements Serializable {
     @Column(name = "wagon_number")
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer wagonNumber;
     @Column(name = "train_number")
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer trainNumber;
 
     @Override

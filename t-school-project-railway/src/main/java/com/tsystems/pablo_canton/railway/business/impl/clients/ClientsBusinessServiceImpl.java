@@ -1,6 +1,7 @@
 package com.tsystems.pablo_canton.railway.business.impl.clients;
 
 import com.tsystems.pablo_canton.railway.business.dto.SeatDTO;
+import com.tsystems.pablo_canton.railway.exception.UserIsNotClientException;
 import com.tsystems.pablo_canton.railway.utils.Converter;
 import com.tsystems.pablo_canton.railway.business.api.clients.IClientsBusinessService;
 import com.tsystems.pablo_canton.railway.business.dto.ScheduleDTO;
@@ -54,6 +55,10 @@ public class ClientsBusinessServiceImpl implements IClientsBusinessService {
 
         if(clientsDataService.userAlreadyHaveTicket(user, schedule.getScheduleId())){
             throw new UserAlreadyHaveTicketException("User already have a ticket for the schedule " + user.getUserId());
+        }
+
+        if(!user.getRole().equals("C")){
+            throw new UserIsNotClientException("User is not a client " + user.getUserId());
         }
 
         LocalDateTime departure_time = schedule.getDepartureTime();

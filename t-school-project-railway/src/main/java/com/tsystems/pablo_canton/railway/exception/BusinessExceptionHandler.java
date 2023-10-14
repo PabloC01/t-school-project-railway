@@ -35,10 +35,16 @@ public class BusinessExceptionHandler {
         return ResponseEntity.status(409).body(e.getMessage());
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(UserIsNotClientException.class)
+    public ResponseEntity<?> handleUserIsNotClient(UserIsNotClientException e) {
+        log.warn(e.getMessage());
+        return ResponseEntity.status(409).body(e.getMessage());
+    }
+
+/*    @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleUnknown(Exception e) {
         String errorId = UUID.randomUUID().toString();
         log.error(errorId, e.getMessage());
         return ResponseEntity.status(500).body("Server error occurred, please contact the admin. Error ID is " + errorId);
-    }
+    }*/
 }

@@ -1,9 +1,7 @@
 package com.tsystems.pablo_canton.railway.utils;
 
-import com.tsystems.pablo_canton.railway.business.dto.ScheduleDTO;
-import com.tsystems.pablo_canton.railway.business.dto.TicketDTO;
-import com.tsystems.pablo_canton.railway.persistence.jpa.entities.ScheduleEntity;
-import com.tsystems.pablo_canton.railway.persistence.jpa.entities.TicketEntity;
+import com.tsystems.pablo_canton.railway.business.dto.*;
+import com.tsystems.pablo_canton.railway.persistence.jpa.entities.*;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.springframework.stereotype.Component;
@@ -24,5 +22,20 @@ public class Converter {
     public TicketDTO createTicketDto(TicketEntity seat){
         mapperFactory.classMap(TicketEntity.class, TicketDTO.class);
         return mapperFactory.getMapperFacade().map(seat, TicketDTO.class);
+    }
+
+    public TrainDTO createTrainDTO(TrainEntity train) {
+        mapperFactory.classMap(TrainEntity.class, TrainDTO.class);
+        return mapperFactory.getMapperFacade().map(train, TrainDTO.class);
+    }
+
+    public UserDTO createUserDTO(UserEntity user) {
+        mapperFactory.classMap(UserEntity.class, UserDTO.class);
+        return mapperFactory.getMapperFacade().map(user, UserDTO.class);
+    }
+
+    public StationDTO createStationDto(StationEntity station) {
+        mapperFactory.classMap(StationEntity.class, StationDTO.class);
+        return mapperFactory.getMapperFacade().map(station, StationDTO.class);
     }
 }

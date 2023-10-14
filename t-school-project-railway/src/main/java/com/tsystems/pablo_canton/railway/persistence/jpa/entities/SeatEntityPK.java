@@ -12,14 +12,11 @@ import java.io.Serializable;
 public class SeatEntityPK implements Serializable {
     @Column(name = "number")
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer number;
     @Column(name = "wagon_number")
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer wagonNumber;
     @Column(name = "train_number")
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer trainNumber;
 }
