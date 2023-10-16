@@ -22,4 +22,8 @@ public class TrainEntity {
     private Collection<ScheduleEntity> schedulesByNumber;
     @OneToMany(mappedBy = "trainByNumber", cascade = CascadeType.ALL)
     private Collection<WagonEntity> wagonsByNumber;
+
+    public String toString() {
+        return "TrainEntity(trainId=" + this.getTrainId() + ", number=" + this.getNumber() + ")";
+    }
 }

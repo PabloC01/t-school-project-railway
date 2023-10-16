@@ -36,4 +36,8 @@ public class UserEntity {
     private Date birthDate;
     @OneToMany(mappedBy = "userByUserId", cascade = CascadeType.ALL)
     private Collection<TicketEntity> ticketsByUserId;
+
+    public String toString() {
+        return "UserEntity(userId=" + this.getUserId() + ", username=" + this.getUsername() + ", password=" + this.getPassword() + ", role=" + this.getRole() + ", name=" + this.getName() + ", surname=" + this.getSurname() + ", birthDate=" + this.getBirthDate() + ")";
+    }
 }

@@ -29,4 +29,8 @@ public class SeatEntity {
     private WagonEntity wagon;
     @OneToMany(mappedBy = "seat", cascade = CascadeType.ALL)
     private Collection<TicketEntity> tickets;
+
+    public String toString() {
+        return "SeatEntity(number=" + this.getNumber() + ", wagonNumber=" + this.getWagonNumber() + ", trainNumber=" + this.getTrainNumber() + ", description=" + this.getDescription() + ", wagon=" + this.getWagon().toString() + ")";
+    }
 }

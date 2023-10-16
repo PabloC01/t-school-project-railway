@@ -33,4 +33,9 @@ public class ScheduleEntity {
     private StationEntity stationByEndStationId;
     @OneToMany(mappedBy = "scheduleByScheduleId", cascade = CascadeType.ALL)
     private Collection<TicketEntity> ticketsByScheduleId;
+
+    @Override
+    public String toString() {
+        return "ScheduleEntity(scheduleId=" + this.getScheduleId() + ", departureTime=" + this.getDepartureTime() + ", arrivalTime=" + this.getArrivalTime() + ", trainByNumber=" + this.getTrainByNumber().toString() + ", stationByStartStationId=" + this.getStationByStartStationId().toString() + ", stationByEndStationId=" + this.getStationByEndStationId().toString() + ")";
+    }
 }

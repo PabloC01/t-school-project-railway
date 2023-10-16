@@ -29,4 +29,8 @@ public class WagonEntity {
     @ManyToOne
     @JoinColumn(name = "train_number", referencedColumnName = "number", nullable = false, insertable = false, updatable = false)
     private TrainEntity trainByNumber;
+
+    public String toString() {
+        return "WagonEntity(wagonNumber=" + this.getWagonNumber() + ", trainNumber=" + this.getTrainNumber() + ", seatCount=" + this.getSeatCount() + ", seatPerRow=" + this.getSeatPerRow() + ", trainByNumber=" + this.getTrainByNumber().toString() + ")";
+    }
 }
