@@ -1,5 +1,6 @@
 package com.tsystems.pablo_canton.railway.persistence.jpa.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -9,6 +10,7 @@ import java.util.Collection;
 @Entity
 @Data
 @Table(name = "schedules")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "ticketsByScheduleId"})
 public class ScheduleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
