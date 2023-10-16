@@ -9,7 +9,7 @@ public class ScheduleDTO {
     private Integer scheduleId;
     private LocalDateTime departureTime;
     private LocalDateTime  arrivalTime;
-    private TrainDTO trainByNumber;
-    private StationDTO stationByStartStationId;
-    private StationDTO stationByEndStationId;
+    private TrainDTO train;
+    private StationDTO startStation;
+    private StationDTO endStation;
 }

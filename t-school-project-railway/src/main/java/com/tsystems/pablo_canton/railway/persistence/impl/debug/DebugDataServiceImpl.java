@@ -33,7 +33,7 @@ public class DebugDataServiceImpl implements IDebugDataService {
     public Collection<ScheduleEntity> findSchedulesByStartStationId(Integer id) {
         Optional<StationEntity> station = stationRepository.findById(id);
         if(station.isPresent()){
-            return station.get().getSchedulesByStationId();
+            return station.get().getSchedulesByStartStationId();
         }
         else return Collections.emptyList();
     }

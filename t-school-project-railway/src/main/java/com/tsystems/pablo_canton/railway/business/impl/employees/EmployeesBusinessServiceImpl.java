@@ -54,9 +54,9 @@ public class EmployeesBusinessServiceImpl implements IEmployeesBusinessService {
         ScheduleEntity schedule = new ScheduleEntity();
         schedule.setArrivalTime(dto.getArrivalTime());
         schedule.setDepartureTime(dto.getDepartureTime());
-        schedule.setTrainByNumber(employeesDataService.loadTrain(dto.getTrainByNumber().getTrainId()));
-        schedule.setStationByStartStationId(employeesDataService.loadStation(dto.getStationByStartStationId().getStationId()));
-        schedule.setStationByEndStationId(employeesDataService.loadStation(dto.getStationByEndStationId().getStationId()));
+        schedule.setTrainByNumber(employeesDataService.loadTrain(dto.getTrain().getTrainId()));
+        schedule.setStationByStartStationId(employeesDataService.loadStation(dto.getStartStation().getStationId()));
+        schedule.setStationByEndStationId(employeesDataService.loadStation(dto.getEndStation().getStationId()));
 
         return converter.createScheduleDTO(employeesDataService.createSchedule(schedule));
     }

@@ -7,6 +7,5 @@ import java.util.List;
 @Data
 public class SeatInfo {
     private Integer seatNumber;
-
     private boolean isAvailable;
 }

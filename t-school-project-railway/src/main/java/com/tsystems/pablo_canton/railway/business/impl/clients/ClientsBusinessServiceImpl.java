@@ -46,13 +46,13 @@ public class ClientsBusinessServiceImpl implements IClientsBusinessService {
     public TicketDTO createTicket(TicketDTO dto) {
         SeatDTO seatDTO = dto.getSeat();
         SeatEntity seat = clientsDataService.loadSeat(seatDTO.getNumber(), seatDTO.getWagonNumber(), seatDTO.getTrainNumber());
-        ScheduleEntity schedule = clientsDataService.loadSchedule(dto.getScheduleByScheduleId().getScheduleId());
+        ScheduleEntity schedule = clientsDataService.loadSchedule(dto.getSchedule().getScheduleId());
 
         if(clientsDataService.isSeatBusy(seat, schedule)){
             throw new SeatNotFreeException("Seat not free {" + dto.getSeat().getNumber() + "," + dto.getSeat().getWagonNumber() + "," + dto.getSeat().getTrainNumber() + "}");
         }
 
-        UserEntity user = clientsDataService.loadUser(dto.getUserByUserId().getUserId());
+        UserEntity user = clientsDataService.loadUser(dto.getUser().getUserId());
 
         if(clientsDataService.userAlreadyHaveTicket(user, schedule.getScheduleId())){
             throw new UserAlreadyHaveTicketException("User already have a ticket for the schedule " + user.getUserId());

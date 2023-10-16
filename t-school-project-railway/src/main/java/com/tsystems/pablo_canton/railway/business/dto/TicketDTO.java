@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class TicketDTO {
     private Integer ticketId;
-    private UserDTO userByUserId;
+    private UserDTO user;
     private SeatDTO seat;
-    private ScheduleDTO scheduleByScheduleId;
+    private ScheduleDTO schedule;
 }

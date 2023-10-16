@@ -19,9 +19,9 @@ public class StationEntity {
     @Column(name = "name")
     private String name;
     @OneToMany(mappedBy = "stationByStartStationId", cascade = CascadeType.ALL)
-    private Collection<ScheduleEntity> schedulesByStationId;
+    private Collection<ScheduleEntity> schedulesByStartStationId;
     @OneToMany(mappedBy = "stationByEndStationId", cascade = CascadeType.ALL)
-    private Collection<ScheduleEntity> schedulesByStationId_0;
+    private Collection<ScheduleEntity> schedulesByEndStationId;
 
     public String toString() {
         return "StationEntity(stationId=" + this.getStationId() + ", name=" + this.getName() + ")";

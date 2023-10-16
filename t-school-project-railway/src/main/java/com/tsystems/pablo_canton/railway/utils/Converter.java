@@ -15,12 +15,19 @@ public class Converter {
     }
 
     public ScheduleDTO createScheduleDTO(ScheduleEntity schedule){
-        mapperFactory.classMap(ScheduleEntity.class, ScheduleDTO.class);
+        mapperFactory.classMap(ScheduleEntity.class, ScheduleDTO.class)
+                .field("trainByNumber", "train")
+                .field("stationByStartStationId", "startStation")
+                .field("stationByEndStationId", "endStation")
+                .byDefault().register();
         return mapperFactory.getMapperFacade().map(schedule, ScheduleDTO.class);
     }
 
     public TicketDTO createTicketDto(TicketEntity seat){
-        mapperFactory.classMap(TicketEntity.class, TicketDTO.class);
+        mapperFactory.classMap(TicketEntity.class, TicketDTO.class)
+                .field("userByUserId", "user")
+                .field("scheduleByScheduleId", "schedule")
+                .byDefault().register();
         return mapperFactory.getMapperFacade().map(seat, TicketDTO.class);
     }
 

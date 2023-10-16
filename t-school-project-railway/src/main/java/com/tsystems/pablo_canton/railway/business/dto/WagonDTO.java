@@ -8,5 +8,5 @@ public class WagonDTO {
     private Integer trainNumber;
     private Integer seatCount;
     private Integer seatPerRow;
-    private TrainDTO trainByNumber;
+    private TrainDTO train;
 }
