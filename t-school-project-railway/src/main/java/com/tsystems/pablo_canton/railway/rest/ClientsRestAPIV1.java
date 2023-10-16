@@ -2,6 +2,7 @@ package com.tsystems.pablo_canton.railway.rest;
 
 import com.tsystems.pablo_canton.railway.business.api.clients.IClientsBusinessService;
 import com.tsystems.pablo_canton.railway.business.dto.ScheduleDTO;
+import com.tsystems.pablo_canton.railway.business.dto.SeatInfo;
 import com.tsystems.pablo_canton.railway.business.dto.TicketDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class ClientsRestAPIV1 {
     }
 
     @GetMapping(value = "/empty_seats", params = {"train_number", "wagon_number", "schedule_id"})
-    public List<Boolean> searchEmptySeats(@RequestParam("train_number") Integer trainNumber, @RequestParam("wagon_number") Integer wagonNumber, @RequestParam("schedule_id") Integer scheduleId){
+    public List<SeatInfo> searchEmptySeats(@RequestParam("train_number") Integer trainNumber, @RequestParam("wagon_number") Integer wagonNumber, @RequestParam("schedule_id") Integer scheduleId){
         return clientsBusinessService.getEmptySeats(trainNumber, wagonNumber, scheduleId);
     }
 }

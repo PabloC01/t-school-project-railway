@@ -1,5 +1,6 @@
 package com.tsystems.pablo_canton.railway.persistence.impl.clients;
 
+import com.tsystems.pablo_canton.railway.business.dto.SeatInfo;
 import com.tsystems.pablo_canton.railway.exception.ResourceNotFoundException;
 import com.tsystems.pablo_canton.railway.persistence.api.clients.IClientsDataService;
 import com.tsystems.pablo_canton.railway.persistence.jpa.entities.*;
@@ -46,17 +47,17 @@ public class ClientsDataServiceImpl implements IClientsDataService {
     }
 
     @Override
-    public List<Boolean> findEmptySeats(Integer trainNumber, Integer wagonNumber, Integer scheduleId) {
+    public List<SeatInfo> findEmptySeats(Integer trainNumber, Integer wagonNumber, Integer scheduleId) {
         List<SeatEntity> busySeats = queryRepository.findSeatsByScheduleAndWagon(trainNumber, wagonNumber, scheduleId);
         WagonEntity wagon = loadWagon(trainNumber, wagonNumber);
 
-        List<Boolean> emptySeats = new ArrayList<>(Collections.nCopies(wagon.getSeatCount(), true));
+        List<Boolean> seats = new ArrayList<>(Collections.nCopies(wagon.getSeatCount(), true));
 
         for(SeatEntity seat : busySeats){
-            emptySeats.set(seat.getNumber()-1, false);
+            seats.set(seat.getNumber()-1, false);
         }
 
-        return emptySeats;
+        return createSeatInfoList(seats);
     }
 
     @Override
@@ -100,5 +101,18 @@ public class ClientsDataServiceImpl implements IClientsDataService {
         wagonEntityPK.setTrainNumber(trainNumber);
         return wagonRepository.findById(wagonEntityPK)
                 .orElseThrow(() -> new ResourceNotFoundException("Wagon not found {" + trainNumber + "," + wagonNumber + "}"));
+    }
+
+    public List<SeatInfo> createSeatInfoList(List<Boolean> seats){
+        List<SeatInfo> seatInfoList = new ArrayList<>();
+
+        for(int i=0; i<seats.size(); i++){
+            SeatInfo seatInfo = new SeatInfo();
+            seatInfo.setSeatNumber(i+1);
+            seatInfo.setAvailable(seats.get(i));
+            seatInfoList.add(seatInfo);
+        }
+
+        return seatInfoList;
     }
 }

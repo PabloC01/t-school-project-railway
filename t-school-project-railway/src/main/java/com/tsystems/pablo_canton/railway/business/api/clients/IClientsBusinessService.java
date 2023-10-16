@@ -1,6 +1,7 @@
 package com.tsystems.pablo_canton.railway.business.api.clients;
 
 import com.tsystems.pablo_canton.railway.business.dto.ScheduleDTO;
+import com.tsystems.pablo_canton.railway.business.dto.SeatInfo;
 import com.tsystems.pablo_canton.railway.business.dto.TicketDTO;
 
 import java.time.LocalDateTime;
@@ -13,5 +14,5 @@ public interface IClientsBusinessService {
 
     TicketDTO createTicket(TicketDTO dto);
 
-    List<Boolean> getEmptySeats(Integer trainNumber, Integer wagonNumber, Integer scheduleId);
+    List<SeatInfo> getEmptySeats(Integer trainNumber, Integer wagonNumber, Integer scheduleId);
 }

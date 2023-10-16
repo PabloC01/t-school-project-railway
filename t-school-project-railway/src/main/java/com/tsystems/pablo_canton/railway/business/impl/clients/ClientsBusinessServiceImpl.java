@@ -1,6 +1,7 @@
 package com.tsystems.pablo_canton.railway.business.impl.clients;
 
 import com.tsystems.pablo_canton.railway.business.dto.SeatDTO;
+import com.tsystems.pablo_canton.railway.business.dto.SeatInfo;
 import com.tsystems.pablo_canton.railway.exception.UserIsNotClientException;
 import com.tsystems.pablo_canton.railway.utils.Converter;
 import com.tsystems.pablo_canton.railway.business.api.clients.IClientsBusinessService;
@@ -76,7 +77,7 @@ public class ClientsBusinessServiceImpl implements IClientsBusinessService {
     }
 
     @Override
-    public List<Boolean> getEmptySeats(Integer trainNumber, Integer wagonNumber, Integer scheduleId) {
+    public List<SeatInfo> getEmptySeats(Integer trainNumber, Integer wagonNumber, Integer scheduleId) {
         return clientsDataService.findEmptySeats(trainNumber, wagonNumber, scheduleId);
     }
 }

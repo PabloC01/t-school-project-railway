@@ -1,5 +1,6 @@
 package com.tsystems.pablo_canton.railway.persistence.api.clients;
 
+import com.tsystems.pablo_canton.railway.business.dto.SeatInfo;
 import com.tsystems.pablo_canton.railway.persistence.jpa.entities.*;
 
 import java.time.LocalDateTime;
@@ -12,7 +13,7 @@ public interface IClientsDataService {
 
     TicketEntity createTicket(TicketEntity ticket);
 
-    List<Boolean> findEmptySeats(Integer trainNumber, Integer wagonNumber, Integer scheduleId);
+    List<SeatInfo> findEmptySeats(Integer trainNumber, Integer wagonNumber, Integer scheduleId);
 
     boolean isSeatBusy(SeatEntity seat, ScheduleEntity schedule);
 
