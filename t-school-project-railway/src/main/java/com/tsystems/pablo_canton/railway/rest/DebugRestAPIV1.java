@@ -1,11 +1,17 @@
 package com.tsystems.pablo_canton.railway.rest;
 
 import com.tsystems.pablo_canton.railway.business.api.debug.IDebugBusinessService;
-import com.tsystems.pablo_canton.railway.persistence.dto.DebugResponse;
+import com.tsystems.pablo_canton.railway.business.dto.DebugResponse;
+import com.tsystems.pablo_canton.railway.persistence.jpa.entities.ScheduleEntity;
+import com.tsystems.pablo_canton.railway.persistence.jpa.entities.StationEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/debug")
@@ -32,4 +38,11 @@ public class DebugRestAPIV1 {
         return DebugResponse.builder().debugResponse(resultString).build();
     }
 
+    @GetMapping("/stations")
+    public List<StationEntity> getAllStations(){
+        return debugBusinessService.getAllStations();
+    }
+
+    @GetMapping("/schedulesByStartStation/{id}")
+    public Collection<ScheduleEntity> getSchedulesByStartStation(@PathVariable Integer id) {return debugBusinessService.getSchedulesByStartStationId(id);}
 }
