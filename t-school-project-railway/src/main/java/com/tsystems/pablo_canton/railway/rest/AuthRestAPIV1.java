@@ -2,6 +2,7 @@ package com.tsystems.pablo_canton.railway.rest;
 
 import com.tsystems.pablo_canton.railway.business.dto.AuthDTO;
 import com.tsystems.pablo_canton.railway.business.dto.LoginRequestDto;
+import com.tsystems.pablo_canton.railway.setup.exception.PasswordIncorrectException;
 import com.tsystems.pablo_canton.railway.setup.exception.ResourceNotFoundException;
 import com.tsystems.pablo_canton.railway.persistence.jpa.entities.UserEntity;
 import com.tsystems.pablo_canton.railway.persistence.jpa.repository.UserRepository;
@@ -25,7 +26,7 @@ public class AuthRestAPIV1 {
         UserEntity user = userRepository.findByUsername(loginRequestDto.getUsername()).orElseThrow(() -> new ResourceNotFoundException("User not found " + loginRequestDto.getUsername()));
 
         if(!passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())){
-            throw new RuntimeException("User password does not match");
+            throw new PasswordIncorrectException("User password does not match");
         }
 
         String token = tokenManager.createTokenByUsername(user.getUsername());
