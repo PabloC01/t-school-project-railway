@@ -1,4 +1,4 @@
-package com.tsystems.pablo_canton.railway.utils;
+package com.tsystems.pablo_canton.railway.setup.utils;
 
 import com.tsystems.pablo_canton.railway.business.dto.*;
 import com.tsystems.pablo_canton.railway.persistence.jpa.entities.*;

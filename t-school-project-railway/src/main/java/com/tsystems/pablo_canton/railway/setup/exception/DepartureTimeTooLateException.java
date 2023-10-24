@@ -1,4 +1,4 @@
-package com.tsystems.pablo_canton.railway.exception;
+package com.tsystems.pablo_canton.railway.setup.exception;
 
 import lombok.RequiredArgsConstructor;
 

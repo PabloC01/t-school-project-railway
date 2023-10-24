@@ -1,6 +1,6 @@
 package com.tsystems.pablo_canton.railway.persistence.impl.employees;
 
-import com.tsystems.pablo_canton.railway.exception.ResourceNotFoundException;
+import com.tsystems.pablo_canton.railway.setup.exception.ResourceNotFoundException;
 import com.tsystems.pablo_canton.railway.persistence.api.employees.IEmployeesDataService;
 import com.tsystems.pablo_canton.railway.persistence.jpa.entities.*;
 import com.tsystems.pablo_canton.railway.persistence.jpa.repository.*;
