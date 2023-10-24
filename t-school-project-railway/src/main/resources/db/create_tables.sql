@@ -6,7 +6,7 @@ create table users
     username     varchar(50) not null
         constraint user_pk2
             unique,
-    password     varchar(50) not null,
+    password     varchar(150) not null,
     role         varchar(50) not null,
     name         varchar(50),
     surname      varchar(50),
