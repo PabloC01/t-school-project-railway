@@ -1,4 +1,4 @@
-package com.tsystems.pablo_canton.railway.security;
+package com.tsystems.pablo_canton.railway.setup.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

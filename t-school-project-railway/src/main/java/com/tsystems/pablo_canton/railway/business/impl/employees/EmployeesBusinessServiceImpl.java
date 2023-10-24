@@ -4,7 +4,7 @@ import com.tsystems.pablo_canton.railway.business.api.employees.IEmployeesBusine
 import com.tsystems.pablo_canton.railway.business.dto.*;
 import com.tsystems.pablo_canton.railway.persistence.api.employees.IEmployeesDataService;
 import com.tsystems.pablo_canton.railway.persistence.jpa.entities.*;
-import com.tsystems.pablo_canton.railway.utils.Converter;
+import com.tsystems.pablo_canton.railway.setup.utils.Converter;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

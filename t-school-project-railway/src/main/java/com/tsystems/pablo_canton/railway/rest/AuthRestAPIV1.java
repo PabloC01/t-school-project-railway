@@ -2,10 +2,10 @@ package com.tsystems.pablo_canton.railway.rest;
 
 import com.tsystems.pablo_canton.railway.business.dto.AuthDTO;
 import com.tsystems.pablo_canton.railway.business.dto.LoginRequestDto;
-import com.tsystems.pablo_canton.railway.exception.ResourceNotFoundException;
+import com.tsystems.pablo_canton.railway.setup.exception.ResourceNotFoundException;
 import com.tsystems.pablo_canton.railway.persistence.jpa.entities.UserEntity;
 import com.tsystems.pablo_canton.railway.persistence.jpa.repository.UserRepository;
-import com.tsystems.pablo_canton.railway.security.TokenManager;
+import com.tsystems.pablo_canton.railway.setup.security.TokenManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;

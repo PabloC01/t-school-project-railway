@@ -1,9 +1,9 @@
-package com.tsystems.pablo_canton.railway.exception;
+package com.tsystems.pablo_canton.railway.setup.exception;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class ResourceNotFoundException extends RuntimeException{
+public class UserAlreadyHaveTicketException extends RuntimeException{
 
     private final String message;
 

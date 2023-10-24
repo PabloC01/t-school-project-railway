@@ -1,6 +1,6 @@
-package com.tsystems.pablo_canton.railway.security;
+package com.tsystems.pablo_canton.railway.setup.security;
 
-import com.tsystems.pablo_canton.railway.exception.ResourceNotFoundException;
+import com.tsystems.pablo_canton.railway.setup.exception.ResourceNotFoundException;
 import com.tsystems.pablo_canton.railway.persistence.jpa.entities.UserEntity;
 import com.tsystems.pablo_canton.railway.persistence.jpa.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

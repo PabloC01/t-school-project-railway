@@ -1,9 +1,9 @@
-package com.tsystems.pablo_canton.railway.exception;
+package com.tsystems.pablo_canton.railway.setup.exception;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class SeatNotFreeException extends RuntimeException{
+public class UserIsNotClientException extends RuntimeException{
 
     private final String message;
 

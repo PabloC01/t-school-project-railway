@@ -1,4 +1,4 @@
-package com.tsystems.pablo_canton.railway.security;
+package com.tsystems.pablo_canton.railway.setup.security;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
