@@ -47,6 +47,12 @@ public class BusinessExceptionHandler {
         return ResponseEntity.status(409).body(e.getMessage());
     }
 
+    @ExceptionHandler(UsernameAlreadyExistsException.class)
+    public ResponseEntity<?> handleUsernameAlreadyExists(UsernameAlreadyExistsException e) {
+        log.warn(e.getMessage());
+        return ResponseEntity.status(409).body(e.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleUnknown(Exception e) {
         String errorId = UUID.randomUUID().toString();
