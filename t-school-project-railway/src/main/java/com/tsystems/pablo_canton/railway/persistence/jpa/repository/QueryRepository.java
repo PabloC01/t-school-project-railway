@@ -28,11 +28,11 @@ public class QueryRepository {
         return query.getResultList();
     }
 
-    public List<ScheduleEntity> findSchedulesByStationId(Integer stationId){
+    public List<ScheduleEntity> findSchedulesByStationName(String stationName){
         TypedQuery<ScheduleEntity> query = entityManager.createQuery(
-                "SELECT s FROM ScheduleEntity s WHERE s.stationByStartStationId.stationId = :station_id or s.stationByEndStationId.stationId = :station_id",
+                "SELECT s FROM ScheduleEntity s WHERE s.stationByStartStationId.name = :station_name or s.stationByEndStationId.name = :station_name",
                 ScheduleEntity.class);
-        query.setParameter("station_id", stationId);
+        query.setParameter("station_name", stationName);
 
         return query.getResultList();
     }
@@ -64,6 +64,14 @@ public class QueryRepository {
         query.setParameter("train_number", trainNumber);
         query.setParameter("wagon_number", wagonNumber);
         query.setParameter("schedule_id", scheduleId);
+
+        return query.getResultList();
+    }
+
+    public List<String> findStationNames() {
+        TypedQuery<String> query = entityManager.createQuery(
+                "SELECT s.name FROM StationEntity s",
+                String.class);
 
         return query.getResultList();
     }

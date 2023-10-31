@@ -9,7 +9,9 @@ import java.util.List;
 public interface IClientsDataService {
     List<ScheduleEntity> findSchedules(Integer stationAId, Integer stationBId, LocalDateTime startTime, LocalDateTime endTime);
 
-    List<ScheduleEntity> findSchedulesByStationId(Integer stationId);
+    List<ScheduleEntity> findSchedulesByStationName(String stationName);
+
+    List<String> findStationNames();
 
     TicketEntity createTicket(TicketEntity ticket);
 

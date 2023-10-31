@@ -22,9 +22,14 @@ public class ClientsRestAPIV1 {
         return clientsBusinessService.getSchedules(startStation, endStation, LocalDateTime.parse(startTime), LocalDateTime.parse(endTime));
     }
 
-    @GetMapping(value = "/schedule", params = {"station_id"})
-    public List<ScheduleDTO> searchSchedulesByStationId(@RequestParam("station_id") Integer stationId){
-        return clientsBusinessService.getSchedulesByStationId(stationId);
+    @GetMapping(value = "/schedule", params = {"station_name"})
+    public List<ScheduleDTO> searchSchedulesByStationName(@RequestParam("station_name") String stationName){
+        return clientsBusinessService.getSchedulesByStationName(stationName);
+    }
+
+    @GetMapping(value = "/station_names")
+    public List<String> searchStationNames(){
+        return clientsBusinessService.getStationNames();
     }
 
     @PostMapping(value = "/ticket")

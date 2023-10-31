@@ -37,8 +37,13 @@ public class ClientsDataServiceImpl implements IClientsDataService {
     }
 
     @Override
-    public List<ScheduleEntity> findSchedulesByStationId(Integer stationId) {
-        return queryRepository.findSchedulesByStationId(stationId);
+    public List<ScheduleEntity> findSchedulesByStationName(String stationName) {
+        return queryRepository.findSchedulesByStationName(stationName);
+    }
+
+    @Override
+    public List<String> findStationNames() {
+        return queryRepository.findStationNames();
     }
 
     @Override

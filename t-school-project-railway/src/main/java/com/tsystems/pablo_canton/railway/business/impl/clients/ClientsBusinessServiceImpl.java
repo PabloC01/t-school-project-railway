@@ -36,8 +36,8 @@ public class ClientsBusinessServiceImpl implements IClientsBusinessService {
     }
 
     @Override
-    public List<ScheduleDTO> getSchedulesByStationId(Integer stationId) {
-        return clientsDataService.findSchedulesByStationId(stationId).stream()
+    public List<ScheduleDTO> getSchedulesByStationName(String stationName) {
+        return clientsDataService.findSchedulesByStationName(stationName).stream()
                 .map(converter::createScheduleDTO)
                 .toList();
     }
@@ -79,5 +79,10 @@ public class ClientsBusinessServiceImpl implements IClientsBusinessService {
     @Override
     public List<SeatInfo> getEmptySeats(Integer trainNumber, Integer wagonNumber, Integer scheduleId) {
         return clientsDataService.findEmptySeats(trainNumber, wagonNumber, scheduleId);
+    }
+
+    @Override
+    public List<String> getStationNames() {
+        return clientsDataService.findStationNames();
     }
 }
