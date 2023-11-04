@@ -32,7 +32,7 @@ public class BusinessExceptionHandler {
     @ExceptionHandler(UserAlreadyHaveTicketException.class)
     public ResponseEntity<?> handleUserAlreadyHaveTicket(UserAlreadyHaveTicketException e) {
         log.warn(e.getMessage());
-        return ResponseEntity.status(409).body(e.getMessage());
+        return ResponseEntity.status(408).body(e.getMessage());
     }
 
     @ExceptionHandler(UserIsNotClientException.class)

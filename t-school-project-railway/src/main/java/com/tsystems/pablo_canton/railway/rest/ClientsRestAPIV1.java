@@ -1,9 +1,8 @@
 package com.tsystems.pablo_canton.railway.rest;
 
 import com.tsystems.pablo_canton.railway.business.api.clients.IClientsBusinessService;
-import com.tsystems.pablo_canton.railway.business.dto.ScheduleDTO;
-import com.tsystems.pablo_canton.railway.business.dto.SeatInfo;
-import com.tsystems.pablo_canton.railway.business.dto.TicketDTO;
+import com.tsystems.pablo_canton.railway.business.dto.*;
+import com.tsystems.pablo_canton.railway.setup.security.TokenManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +16,10 @@ public class ClientsRestAPIV1 {
 
     private final IClientsBusinessService clientsBusinessService;
 
+    private final TokenManager tokenManager;
+
     @GetMapping(value = "/search_schedule", params = {"start_station","end_station","start_time","end_time"})
-    public List<ScheduleDTO> searchSchedules(@RequestParam("start_station") Integer startStation, @RequestParam("end_station") Integer endStation, @RequestParam("start_time") String startTime, @RequestParam("end_time") String endTime){
+    public List<ScheduleDTO> searchSchedules(@RequestParam("start_station") String startStation, @RequestParam("end_station") String endStation, @RequestParam("start_time") String startTime, @RequestParam("end_time") String endTime){
         return clientsBusinessService.getSchedules(startStation, endStation, LocalDateTime.parse(startTime), LocalDateTime.parse(endTime));
     }
 
@@ -33,12 +34,41 @@ public class ClientsRestAPIV1 {
     }
 
     @PostMapping(value = "/ticket")
-    public TicketDTO createTicket(@RequestBody TicketDTO ticket){
-        return clientsBusinessService.createTicket(ticket);
+    public TicketDTO createTicket(@RequestBody BuyTicketInfo ticket){
+        TicketDTO ticketDTO = new TicketDTO();
+
+        String username = tokenManager.getUsernameByToken(ticket.getToken());
+        UserDTO userDTO = clientsBusinessService.getClientByUsername(username);
+
+        ticketDTO.setUser(userDTO);
+        ticketDTO.setSeat(ticket.getSeat());
+        ticketDTO.setSchedule(ticket.getSchedule());
+
+        return clientsBusinessService.createTicket(ticketDTO);
     }
 
-    @GetMapping(value = "/empty_seats", params = {"train_number", "wagon_number", "schedule_id"})
-    public List<SeatInfo> searchEmptySeats(@RequestParam("train_number") Integer trainNumber, @RequestParam("wagon_number") Integer wagonNumber, @RequestParam("schedule_id") Integer scheduleId){
-        return clientsBusinessService.getEmptySeats(trainNumber, wagonNumber, scheduleId);
+    @GetMapping(value = "/wagons", params = {"train_number", "schedule_id"})
+    public List<WagonInfo> searchEmptySeats(@RequestParam("train_number") Integer trainNumber, @RequestParam("schedule_id") Integer scheduleId){
+        return clientsBusinessService.getWagonsInfo(trainNumber, scheduleId);
+    }
+
+    @GetMapping(value = "/user", params = {"token"})
+    public UserInfo searchUserInfo(@RequestParam("token") String token){
+        String username = tokenManager.getUsernameByToken(token);
+        UserDTO userDTO = clientsBusinessService.getClientByUsername(username);
+
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUsername(userDTO.getUsername());
+        userInfo.setName(userDTO.getName());
+        userInfo.setSurname(userDTO.getSurname());
+        userInfo.setBirthDate(userDTO.getBirthDate());
+
+        return userInfo;
+    }
+
+    @GetMapping(value = "/tickets", params = {"token"})
+    public List<TicketDTO> searchClientTickets(@RequestParam("token") String token){
+        String username = tokenManager.getUsernameByToken(token);
+        return clientsBusinessService.getClientTickets(username);
     }
 }

@@ -1,8 +1,6 @@
 package com.tsystems.pablo_canton.railway.persistence.jpa.repository;
 
-import com.tsystems.pablo_canton.railway.persistence.jpa.entities.ScheduleEntity;
-import com.tsystems.pablo_canton.railway.persistence.jpa.entities.SeatEntity;
-import com.tsystems.pablo_canton.railway.persistence.jpa.entities.UserEntity;
+import com.tsystems.pablo_canton.railway.persistence.jpa.entities.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -16,12 +14,12 @@ public class QueryRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public List<ScheduleEntity> findSchedules(Integer stationAId, Integer stationBId, LocalDateTime startTime, LocalDateTime endTime) {
+    public List<ScheduleEntity> findSchedules(String stationAName, String stationBName, LocalDateTime startTime, LocalDateTime endTime) {
         TypedQuery<ScheduleEntity> query = entityManager.createQuery(
-                "SELECT s FROM ScheduleEntity s WHERE s.stationByStartStationId.stationId=:start_station and s.stationByEndStationId.stationId=:end_station and s.departureTime between :start and :end",
+                "SELECT s FROM ScheduleEntity s WHERE s.stationByStartStationId.name=:start_station and s.stationByEndStationId.name=:end_station and s.departureTime between :start and :end",
                 ScheduleEntity.class);
-        query.setParameter("start_station", stationAId);
-        query.setParameter("end_station", stationBId);
+        query.setParameter("start_station", stationAName);
+        query.setParameter("end_station", stationBName);
         query.setParameter("start", startTime);
         query.setParameter("end", endTime);
 
@@ -30,7 +28,7 @@ public class QueryRepository {
 
     public List<ScheduleEntity> findSchedulesByStationName(String stationName){
         TypedQuery<ScheduleEntity> query = entityManager.createQuery(
-                "SELECT s FROM ScheduleEntity s WHERE s.stationByStartStationId.name = :station_name or s.stationByEndStationId.name = :station_name",
+                "SELECT s FROM ScheduleEntity s WHERE s.stationByStartStationId.name = :station_name or s.stationByEndStationId.name = :station_name ORDER BY s.departureTime DESC",
                 ScheduleEntity.class);
         query.setParameter("station_name", stationName);
 
@@ -68,10 +66,28 @@ public class QueryRepository {
         return query.getResultList();
     }
 
+    public List<WagonEntity> findTrainWagons(Integer trainNumber){
+        TypedQuery<WagonEntity> query = entityManager.createQuery(
+                "SELECT t.wagonsByNumber FROM TrainEntity t WHERE t.number = :train_number",
+                WagonEntity.class);
+        query.setParameter("train_number", trainNumber);
+
+        return query.getResultList();
+    }
+
     public List<String> findStationNames() {
         TypedQuery<String> query = entityManager.createQuery(
                 "SELECT s.name FROM StationEntity s",
                 String.class);
+
+        return query.getResultList();
+    }
+
+    public List<TicketEntity> findClientTickets(String username) {
+        TypedQuery<TicketEntity> query = entityManager.createQuery(
+                "SELECT t FROM TicketEntity t WHERE t.userByUserId.username = :username",
+                TicketEntity.class);
+        query.setParameter("username", username);
 
         return query.getResultList();
     }

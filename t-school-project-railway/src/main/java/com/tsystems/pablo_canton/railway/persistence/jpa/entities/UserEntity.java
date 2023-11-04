@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Collection;
 
 @Entity
@@ -33,7 +33,7 @@ public class UserEntity {
     private String surname;
     @Basic
     @Column(name = "birth_date")
-    private Date birthDate;
+    private LocalDate birthDate;
     @OneToMany(mappedBy = "userByUserId", cascade = CascadeType.ALL)
     private Collection<TicketEntity> ticketsByUserId;
 

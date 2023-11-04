@@ -63,8 +63,8 @@ public class EmployeesDataServiceImpl implements IEmployeesDataService {
     }
 
     @Override
-    public SeatEntity createSeat(SeatEntity seat) {
-        return seatRepository.save(seat);
+    public void createSeat(SeatEntity seat) {
+        seatRepository.save(seat);
     }
 
     @Override

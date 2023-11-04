@@ -2,7 +2,6 @@ package com.tsystems.pablo_canton.railway.persistence.api.employees;
 
 import com.tsystems.pablo_canton.railway.persistence.jpa.entities.*;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface IEmployeesDataService {
@@ -20,7 +19,7 @@ public interface IEmployeesDataService {
 
     WagonEntity createWagon(WagonEntity wagon);
 
-    SeatEntity createSeat(SeatEntity seat);
+    void createSeat(SeatEntity seat);
 
     StationEntity loadStation(Integer id);
 

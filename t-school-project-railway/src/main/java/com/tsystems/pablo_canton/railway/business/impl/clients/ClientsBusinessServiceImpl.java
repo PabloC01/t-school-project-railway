@@ -1,12 +1,9 @@
 package com.tsystems.pablo_canton.railway.business.impl.clients;
 
-import com.tsystems.pablo_canton.railway.business.dto.SeatDTO;
-import com.tsystems.pablo_canton.railway.business.dto.SeatInfo;
+import com.tsystems.pablo_canton.railway.business.dto.*;
 import com.tsystems.pablo_canton.railway.setup.exception.UserIsNotClientException;
 import com.tsystems.pablo_canton.railway.setup.utils.Converter;
 import com.tsystems.pablo_canton.railway.business.api.clients.IClientsBusinessService;
-import com.tsystems.pablo_canton.railway.business.dto.ScheduleDTO;
-import com.tsystems.pablo_canton.railway.business.dto.TicketDTO;
 import com.tsystems.pablo_canton.railway.setup.exception.DepartureTimeTooLateException;
 import com.tsystems.pablo_canton.railway.setup.exception.SeatNotFreeException;
 import com.tsystems.pablo_canton.railway.setup.exception.UserAlreadyHaveTicketException;
@@ -29,8 +26,8 @@ public class ClientsBusinessServiceImpl implements IClientsBusinessService {
 
     private final Converter converter;
     @Override
-    public List<ScheduleDTO> getSchedules(Integer stationAId, Integer stationBId, LocalDateTime startTime, LocalDateTime endTime) {
-        return clientsDataService.findSchedules(stationAId, stationBId, startTime, endTime).stream()
+    public List<ScheduleDTO> getSchedules(String stationAName, String stationBName, LocalDateTime startTime, LocalDateTime endTime) {
+        return clientsDataService.findSchedules(stationAName, stationBName, startTime, endTime).stream()
                 .map(converter::createScheduleDTO)
                 .toList();
     }
@@ -55,7 +52,7 @@ public class ClientsBusinessServiceImpl implements IClientsBusinessService {
         UserEntity user = clientsDataService.loadUser(dto.getUser().getUserId());
 
         if(clientsDataService.userAlreadyHaveTicket(user, schedule.getScheduleId())){
-            throw new UserAlreadyHaveTicketException("User already have a ticket for the schedule " + user.getUserId());
+            throw new UserAlreadyHaveTicketException("User already have a ticket for the schedule " + schedule.getScheduleId());
         }
 
         if(!user.getRole().equals("C")){
@@ -77,12 +74,24 @@ public class ClientsBusinessServiceImpl implements IClientsBusinessService {
     }
 
     @Override
-    public List<SeatInfo> getEmptySeats(Integer trainNumber, Integer wagonNumber, Integer scheduleId) {
-        return clientsDataService.findEmptySeats(trainNumber, wagonNumber, scheduleId);
+    public List<WagonInfo> getWagonsInfo(Integer trainNumber, Integer scheduleId) {
+        return clientsDataService.findWagonsInfo(trainNumber, scheduleId);
     }
 
     @Override
     public List<String> getStationNames() {
         return clientsDataService.findStationNames();
+    }
+
+    @Override
+    public UserDTO getClientByUsername(String username) {
+        return converter.createUserDTO(clientsDataService.loadUserByUsername(username));
+    }
+
+    @Override
+    public List<TicketDTO> getClientTickets(String username) {
+        return clientsDataService.findClientTickets(username).stream()
+                .map(converter::createTicketDto)
+                .toList();
     }
 }

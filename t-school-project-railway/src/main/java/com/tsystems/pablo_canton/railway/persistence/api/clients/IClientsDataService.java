@@ -1,13 +1,13 @@
 package com.tsystems.pablo_canton.railway.persistence.api.clients;
 
-import com.tsystems.pablo_canton.railway.business.dto.SeatInfo;
+import com.tsystems.pablo_canton.railway.business.dto.WagonInfo;
 import com.tsystems.pablo_canton.railway.persistence.jpa.entities.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IClientsDataService {
-    List<ScheduleEntity> findSchedules(Integer stationAId, Integer stationBId, LocalDateTime startTime, LocalDateTime endTime);
+    List<ScheduleEntity> findSchedules(String stationAName, String stationBName, LocalDateTime startTime, LocalDateTime endTime);
 
     List<ScheduleEntity> findSchedulesByStationName(String stationName);
 
@@ -15,7 +15,9 @@ public interface IClientsDataService {
 
     TicketEntity createTicket(TicketEntity ticket);
 
-    List<SeatInfo> findEmptySeats(Integer trainNumber, Integer wagonNumber, Integer scheduleId);
+    List<WagonInfo> findWagonsInfo(Integer trainNumber, Integer scheduleId);
+
+    List<TicketEntity> findClientTickets(String username);
 
     boolean isSeatBusy(SeatEntity seat, ScheduleEntity schedule);
 
@@ -25,7 +27,7 @@ public interface IClientsDataService {
 
     UserEntity loadUser(Integer id);
 
-    ScheduleEntity loadSchedule(Integer id);
+    UserEntity loadUserByUsername(String username);
 
-    WagonEntity loadWagon(Integer trainNumber, Integer wagonNumber);
+    ScheduleEntity loadSchedule(Integer id);
 }
