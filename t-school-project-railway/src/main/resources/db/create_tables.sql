@@ -46,7 +46,9 @@ create table schedules
         constraint end_station_fk
             references stations,
     departure_time   timestamp not null,
-    arrival_time     timestamp not null
+    arrival_time     timestamp not null,
+    constraint arrival_after_departure
+        check (arrival_time > departure_time)
 );
 
 create table wagons

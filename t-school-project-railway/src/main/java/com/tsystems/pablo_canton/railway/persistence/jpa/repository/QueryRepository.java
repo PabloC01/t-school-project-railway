@@ -28,7 +28,7 @@ public class QueryRepository {
 
     public List<ScheduleEntity> findSchedulesByStationName(String stationName){
         TypedQuery<ScheduleEntity> query = entityManager.createQuery(
-                "SELECT s FROM ScheduleEntity s WHERE s.stationByStartStationId.name = :station_name or s.stationByEndStationId.name = :station_name ORDER BY s.departureTime DESC",
+                "SELECT s FROM ScheduleEntity s WHERE s.stationByStartStationId.name = :station_name ORDER BY s.departureTime DESC",
                 ScheduleEntity.class);
         query.setParameter("station_name", stationName);
 
