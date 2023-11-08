@@ -20,19 +20,19 @@ public class BusinessExceptionHandler {
     @ExceptionHandler(DepartureTimeTooLateException.class)
     public ResponseEntity<?> handleDepartureTimeTooLate(DepartureTimeTooLateException e) {
         log.warn(e.getMessage());
-        return ResponseEntity.status(409).body(e.getMessage());
+        return ResponseEntity.status(409).body("too late");
     }
 
     @ExceptionHandler(SeatNotFreeException.class)
     public ResponseEntity<?> handleSeatNotFree(SeatNotFreeException e) {
         log.warn(e.getMessage());
-        return ResponseEntity.status(409).body(e.getMessage());
+        return ResponseEntity.status(409).body("seat not free");
     }
 
     @ExceptionHandler(UserAlreadyHaveTicketException.class)
     public ResponseEntity<?> handleUserAlreadyHaveTicket(UserAlreadyHaveTicketException e) {
         log.warn(e.getMessage());
-        return ResponseEntity.status(408).body(e.getMessage());
+        return ResponseEntity.status(409).body("already have ticket");
     }
 
     @ExceptionHandler(UserIsNotClientException.class)
