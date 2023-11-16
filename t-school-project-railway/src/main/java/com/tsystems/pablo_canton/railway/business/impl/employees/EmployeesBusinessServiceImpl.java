@@ -4,11 +4,14 @@ import com.tsystems.pablo_canton.railway.business.api.employees.IEmployeesBusine
 import com.tsystems.pablo_canton.railway.business.dto.*;
 import com.tsystems.pablo_canton.railway.persistence.api.employees.IEmployeesDataService;
 import com.tsystems.pablo_canton.railway.persistence.jpa.entities.*;
+import com.tsystems.pablo_canton.railway.setup.exception.StationNameNotAvailableException;
+import com.tsystems.pablo_canton.railway.setup.exception.TrainNumberNotAvailableException;
 import com.tsystems.pablo_canton.railway.setup.utils.Converter;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,10 +24,22 @@ public class EmployeesBusinessServiceImpl implements IEmployeesBusinessService {
     private final Converter converter;
 
     @Override
-    public List<TrainDTO> getTrains() {
-        return employeesDataService.findTrains().stream()
-                .map(converter::createTrainDTO)
-                .toList();
+    public List<TrainInfo> getTrains() {
+        List<TrainInfo> trainsInfo = new ArrayList<>();
+        List<TrainEntity> trains = employeesDataService.findTrains();
+
+        for(TrainEntity train : trains){
+            TrainInfo info = new TrainInfo();
+
+            info.setTrainId(train.getTrainId());
+            info.setNumber(train.getNumber());
+            info.setWagonCount(train.getWagonsByNumber().size());
+            info.setSeatCount(train.getWagonsByNumber().stream().toList().get(0).getSeatCount());
+
+            trainsInfo.add(info);
+        }
+
+        return trainsInfo;
     }
 
     @Override
@@ -35,16 +50,41 @@ public class EmployeesBusinessServiceImpl implements IEmployeesBusinessService {
     }
 
     @Override
-    public List<UserDTO> getPassengers(Integer scheduleId) {
-        return employeesDataService.findPassengers(scheduleId).stream()
-                .map(converter::createUserDTO)
+    public List<StationDTO> getStations() {
+        return employeesDataService.findStations().stream()
+                .map(converter::createStationDto)
                 .toList();
+    }
+
+    @Override
+    public List<UserInfo> getPassengers(Integer scheduleId) {
+        List<UserInfo> usersInfo = new ArrayList<>();
+        List<UserEntity> users = employeesDataService.findPassengers(scheduleId);
+
+        for(UserEntity user : users){
+            UserInfo info = new UserInfo();
+
+            info.setUsername(user.getUsername());
+            info.setName(user.getName());
+            info.setSurname(user.getSurname());
+            info.setBirthDate(user.getBirthDate());
+
+            usersInfo.add(info);
+        }
+
+        return usersInfo;
     }
 
     @Override
     public StationDTO createStation(StationDTO dto) {
         StationEntity station = new StationEntity();
-        station.setName(dto.getName());
+        String name = dto.getName();
+
+        if(employeesDataService.isStationNameAvailable(name)){
+            throw new StationNameNotAvailableException("Station name already exists " + name);
+        }
+
+        station.setName(name);
 
         return converter.createStationDto(employeesDataService.createStation(station));
     }
@@ -52,11 +92,12 @@ public class EmployeesBusinessServiceImpl implements IEmployeesBusinessService {
     @Override
     public ScheduleDTO createSchedule(ScheduleDTO dto) {
         ScheduleEntity schedule = new ScheduleEntity();
+
         schedule.setArrivalTime(dto.getArrivalTime());
         schedule.setDepartureTime(dto.getDepartureTime());
-        schedule.setTrainByNumber(employeesDataService.loadTrain(dto.getTrain().getTrainId()));
-        schedule.setStationByStartStationId(employeesDataService.loadStation(dto.getStartStation().getStationId()));
-        schedule.setStationByEndStationId(employeesDataService.loadStation(dto.getEndStation().getStationId()));
+        schedule.setTrainByNumber(employeesDataService.loadTrain(dto.getTrain().getNumber()));
+        schedule.setStationByStartStationId(employeesDataService.loadStation(dto.getStartStation().getName()));
+        schedule.setStationByEndStationId(employeesDataService.loadStation(dto.getEndStation().getName()));
 
         return converter.createScheduleDTO(employeesDataService.createSchedule(schedule));
     }
@@ -64,8 +105,13 @@ public class EmployeesBusinessServiceImpl implements IEmployeesBusinessService {
     @Override
     public TrainDTO createTrain(TrainWagons dto) {
         TrainEntity train = new TrainEntity();
-        train.setNumber(dto.getTrain().getNumber());
+        Integer trainNumber = dto.getTrain().getNumber();
 
+        if(employeesDataService.isTrainNumberAvailable(trainNumber)){
+            throw new TrainNumberNotAvailableException("Train number already exists " + trainNumber);
+        }
+
+        train.setNumber(trainNumber);
         train = employeesDataService.createTrain(train);
 
         int wagonNumber = 1;
@@ -73,7 +119,7 @@ public class EmployeesBusinessServiceImpl implements IEmployeesBusinessService {
             WagonEntity wagon = new WagonEntity();
             wagon.setTrainByNumber(train);
             wagon.setWagonNumber(wagonNumber);
-            wagon.setTrainNumber(train.getNumber());
+            wagon.setTrainNumber(trainNumber);
             wagon.setSeatCount(wagonDTO.getSeatCount());
             wagon.setSeatPerRow(wagonDTO.getSeatPerRow());
 
@@ -81,7 +127,7 @@ public class EmployeesBusinessServiceImpl implements IEmployeesBusinessService {
 
             for(int seatNumber = 1; seatNumber <= wagon.getSeatCount(); seatNumber++){
                 SeatEntity seat = new SeatEntity();
-                seat.setTrainNumber(train.getNumber());
+                seat.setTrainNumber(trainNumber);
                 seat.setNumber(seatNumber);
                 seat.setWagonNumber(wagon.getWagonNumber());
                 seat.setWagon(wagon);
@@ -93,5 +139,10 @@ public class EmployeesBusinessServiceImpl implements IEmployeesBusinessService {
         }
 
         return converter.createTrainDTO(train);
+    }
+
+    @Override
+    public List<String> getStationNames() {
+        return employeesDataService.findStationNames();
     }
 }

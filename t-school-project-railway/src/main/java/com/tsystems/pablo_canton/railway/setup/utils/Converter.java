@@ -23,12 +23,15 @@ public class Converter {
         return mapperFactory.getMapperFacade().map(schedule, ScheduleDTO.class);
     }
 
-    public TicketDTO createTicketDto(TicketEntity seat){
+    public TicketDTO createTicketDto(TicketEntity ticket){
         mapperFactory.classMap(TicketEntity.class, TicketDTO.class)
                 .field("userByUserId", "user")
-                .field("scheduleByScheduleId", "schedule")
                 .byDefault().register();
-        return mapperFactory.getMapperFacade().map(seat, TicketDTO.class);
+
+        TicketDTO ticketDTO = mapperFactory.getMapperFacade().map(ticket, TicketDTO.class);
+        ticketDTO.setSchedule(createScheduleDTO(ticket.getScheduleByScheduleId()));
+
+        return ticketDTO;
     }
 
     public TrainDTO createTrainDTO(TrainEntity train) {

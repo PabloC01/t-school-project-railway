@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 @Data
 public class ScheduleDTO {
     private Integer scheduleId;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm")
     private LocalDateTime departureTime;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm")
     private LocalDateTime  arrivalTime;
     private TrainDTO train;
     private StationDTO startStation;

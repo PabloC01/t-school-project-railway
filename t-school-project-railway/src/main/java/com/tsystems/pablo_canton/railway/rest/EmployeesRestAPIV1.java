@@ -15,7 +15,7 @@ public class EmployeesRestAPIV1 {
     private final IEmployeesBusinessService employeesBusinessService;
 
     @GetMapping(value = "/trains")
-    public List<TrainDTO> searchTrains(){
+    public List<TrainInfo> searchTrains(){
         return employeesBusinessService.getTrains();
     }
 
@@ -24,8 +24,13 @@ public class EmployeesRestAPIV1 {
         return employeesBusinessService.getSchedules();
     }
 
+    @GetMapping(value = "/stations")
+    public List<StationDTO> searchStations(){
+        return employeesBusinessService.getStations();
+    }
+
     @GetMapping(value = "/passengers", params = "schedule_id")
-    public List<UserDTO> searchPassengers(@RequestParam("schedule_id") Integer scheduleId){
+    public List<UserInfo> searchPassengers(@RequestParam("schedule_id") Integer scheduleId){
         return employeesBusinessService.getPassengers(scheduleId);
     }
 
@@ -42,5 +47,10 @@ public class EmployeesRestAPIV1 {
     @PostMapping(value = "/trains")
     public TrainDTO createTrain(@RequestBody TrainWagons train){
         return employeesBusinessService.createTrain(train);
+    }
+
+    @GetMapping(value = "/station_names")
+    public List<String> searchStationNames(){
+        return employeesBusinessService.getStationNames();
     }
 }

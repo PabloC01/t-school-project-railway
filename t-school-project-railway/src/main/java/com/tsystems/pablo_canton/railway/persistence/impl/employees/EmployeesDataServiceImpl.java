@@ -38,6 +38,11 @@ public class EmployeesDataServiceImpl implements IEmployeesDataService {
     }
 
     @Override
+    public List<StationEntity> findStations() {
+        return stationRepository.findAll();
+    }
+
+    @Override
     public List<UserEntity> findPassengers(Integer scheduleId) {
         return queryRepository.findScheduleUsers(scheduleId);
     }
@@ -68,14 +73,31 @@ public class EmployeesDataServiceImpl implements IEmployeesDataService {
     }
 
     @Override
-    public StationEntity loadStation(Integer id) {
-        return stationRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Station not found " + id));
+    public StationEntity loadStation(String name) {
+        return stationRepository.findByName(name)
+                .orElseThrow(() -> new ResourceNotFoundException("Station not found " + name));
     }
 
     @Override
-    public TrainEntity loadTrain(Integer id) {
-        return trainRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Train not found " + id));
+    public TrainEntity loadTrain(Integer number) {
+        return trainRepository.findByNumber(number)
+                .orElseThrow(() -> new ResourceNotFoundException("Train not found " + number));
+    }
+
+    @Override
+    public boolean isTrainNumberAvailable(Integer trainNumber) {
+        List<Integer> trainNumbers = queryRepository.findTrainNumbers();
+        return trainNumbers.contains(trainNumber);
+    }
+
+    @Override
+    public boolean isStationNameAvailable(String name) {
+        List<String> stationNames = queryRepository.findStationNames();
+        return stationNames.contains(name);
+    }
+
+    @Override
+    public List<String> findStationNames() {
+        return queryRepository.findStationNames();
     }
 }

@@ -85,9 +85,17 @@ public class QueryRepository {
 
     public List<TicketEntity> findClientTickets(String username) {
         TypedQuery<TicketEntity> query = entityManager.createQuery(
-                "SELECT t FROM TicketEntity t WHERE t.userByUserId.username = :username",
+                "SELECT u.ticketsByUserId FROM UserEntity u WHERE u.username = :username",
                 TicketEntity.class);
         query.setParameter("username", username);
+
+        return query.getResultList();
+    }
+
+    public List<Integer> findTrainNumbers() {
+        TypedQuery<Integer> query = entityManager.createQuery(
+                "SELECT t.number FROM TrainEntity t",
+                Integer.class);
 
         return query.getResultList();
     }

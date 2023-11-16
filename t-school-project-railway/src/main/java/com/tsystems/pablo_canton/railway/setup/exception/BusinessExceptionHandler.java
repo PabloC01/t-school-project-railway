@@ -53,10 +53,22 @@ public class BusinessExceptionHandler {
         return ResponseEntity.status(409).body(e.getMessage());
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleUnknown(Exception e) {
-        String errorId = UUID.randomUUID().toString();
-        log.error(errorId, e.getMessage());
-        return ResponseEntity.status(500).body("Server error occurred, please contact the admin. Error ID is " + errorId);
+    @ExceptionHandler(TrainNumberNotAvailableException.class)
+    public ResponseEntity<?> handleTrainNumberNotAvailable(TrainNumberNotAvailableException e) {
+        log.warn(e.getMessage());
+        return ResponseEntity.status(409).body("train number exists");
     }
+
+    @ExceptionHandler(StationNameNotAvailableException.class)
+    public ResponseEntity<?> handleStationNameNotAvailable(StationNameNotAvailableException e) {
+        log.warn(e.getMessage());
+        return ResponseEntity.status(409).body("station name exists");
+    }
+
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<?> handleUnknown(Exception e) {
+//        String errorId = UUID.randomUUID().toString();
+//        log.error(errorId, e.getMessage());
+//        return ResponseEntity.status(500).body("Server error occurred, please contact the admin. Error ID is " + errorId);
+//    }
 }

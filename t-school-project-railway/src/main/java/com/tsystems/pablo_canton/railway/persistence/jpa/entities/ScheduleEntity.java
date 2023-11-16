@@ -29,7 +29,7 @@ public class ScheduleEntity {
     @JoinColumn(name = "start_station_id", referencedColumnName = "station_id", nullable = false)
     private StationEntity stationByStartStationId;
     @ManyToOne
-    @JoinColumn(name = "end_station_id", referencedColumnName = "station_id")
+    @JoinColumn(name = "end_station_id", referencedColumnName = "station_id", nullable = false)
     private StationEntity stationByEndStationId;
     @OneToMany(mappedBy = "scheduleByScheduleId", cascade = CascadeType.ALL)
     private Collection<TicketEntity> ticketsByScheduleId;

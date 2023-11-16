@@ -2,12 +2,15 @@ package com.tsystems.pablo_canton.railway.persistence.api.employees;
 
 import com.tsystems.pablo_canton.railway.persistence.jpa.entities.*;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface IEmployeesDataService {
     List<TrainEntity> findTrains();
 
     List<ScheduleEntity> findSchedules();
+
+    List<StationEntity> findStations();
 
     List<UserEntity> findPassengers(Integer scheduleId);
 
@@ -21,7 +24,13 @@ public interface IEmployeesDataService {
 
     void createSeat(SeatEntity seat);
 
-    StationEntity loadStation(Integer id);
+    StationEntity loadStation(String name);
 
-    TrainEntity loadTrain(Integer id);
+    TrainEntity loadTrain(Integer number);
+
+    boolean isTrainNumberAvailable(Integer trainNumber);
+
+    boolean isStationNameAvailable(String name);
+
+    List<String> findStationNames();
 }
