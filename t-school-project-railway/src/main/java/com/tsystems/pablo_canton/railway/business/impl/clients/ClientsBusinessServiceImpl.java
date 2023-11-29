@@ -59,9 +59,9 @@ public class ClientsBusinessServiceImpl implements IClientsBusinessService {
             throw new UserIsNotClientException("User is not a client " + user.getUserId());
         }
 
-        LocalDateTime departure_time = schedule.getDepartureTime();
+        LocalDateTime departureTime = schedule.getDepartureTime();
 
-        if(LocalDateTime.now().isAfter(departure_time.minusMinutes(10))){
+        if(LocalDateTime.now().isAfter(departureTime.minusMinutes(10))){
             throw new DepartureTimeTooLateException("Too late before departure of the train");
         }
 

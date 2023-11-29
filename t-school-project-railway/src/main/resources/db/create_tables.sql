@@ -27,7 +27,7 @@ create table trains
         constraint train_pk
             primary key,
     number            integer not null
-        constraint "Train_pk2"
+        constraint train_pk2
             unique
 );
 

@@ -10,6 +10,7 @@ import com.tsystems.pablo_canton.railway.persistence.jpa.repository.UserReposito
 import com.tsystems.pablo_canton.railway.setup.exception.UsernameAlreadyExistsException;
 import com.tsystems.pablo_canton.railway.setup.security.TokenManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class AuthRestAPIV1 {
     private final TokenManager tokenManager;
 
     @PostMapping(value = "/login")
-    public ResponseEntity<AuthDTO> login(@RequestBody LoginRequestDto loginRequestDto){
+    public AuthDTO login(@RequestBody LoginRequestDto loginRequestDto){
         UserEntity user = userRepository.findByUsername(loginRequestDto.getUsername()).orElseThrow(() -> new ResourceNotFoundException("User not found " + loginRequestDto.getUsername()));
 
         if(!passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())){
@@ -37,11 +38,12 @@ public class AuthRestAPIV1 {
         dto.setToken(token);
         dto.setRole(user.getRole());
 
-        return ResponseEntity.ok(dto);
+        return dto;
     }
 
     @PostMapping(value = "/sing-up")
-    public ResponseEntity<AuthDTO> singUp(@RequestBody UserDTO userDTO){
+    @ResponseStatus(HttpStatus.CREATED)
+    public AuthDTO singUp(@RequestBody UserDTO userDTO){
         UserEntity user = createUser(userDTO);
 
         if(userRepository.existsUserEntityByUsername(user.getUsername())){
@@ -56,7 +58,7 @@ public class AuthRestAPIV1 {
         dto.setToken(token);
         dto.setRole(user.getRole());
 
-        return ResponseEntity.ok(dto);
+        return dto;
     }
 
     public UserEntity createUser(UserDTO userDTO){

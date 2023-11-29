@@ -14,6 +14,8 @@ public class QueryRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
+    private static final String TRAIN_NUMBER = "train_number";
+
     public List<ScheduleEntity> findSchedules(String stationAName, String stationBName, LocalDateTime startTime, LocalDateTime endTime) {
         TypedQuery<ScheduleEntity> query = entityManager.createQuery(
                 "SELECT s FROM ScheduleEntity s WHERE s.stationByStartStationId.name=:start_station and s.stationByEndStationId.name=:end_station and s.departureTime between :start and :end",
@@ -41,7 +43,7 @@ public class QueryRepository {
                 ScheduleEntity.class);
         query.setParameter("number", number);
         query.setParameter("wagon_number", wagonNumber);
-        query.setParameter("train_number", trainNumber);
+        query.setParameter(TRAIN_NUMBER, trainNumber);
 
         return query.getResultList();
     }
@@ -59,7 +61,7 @@ public class QueryRepository {
         TypedQuery<SeatEntity> query = entityManager.createQuery(
                 "SELECT t.seat FROM TicketEntity t WHERE t.seat.trainNumber = :train_number and t.seat.wagonNumber = :wagon_number and t.scheduleByScheduleId.scheduleId = :schedule_id",
                 SeatEntity.class);
-        query.setParameter("train_number", trainNumber);
+        query.setParameter(TRAIN_NUMBER, trainNumber);
         query.setParameter("wagon_number", wagonNumber);
         query.setParameter("schedule_id", scheduleId);
 
@@ -70,7 +72,7 @@ public class QueryRepository {
         TypedQuery<WagonEntity> query = entityManager.createQuery(
                 "SELECT t.wagonsByNumber FROM TrainEntity t WHERE t.number = :train_number",
                 WagonEntity.class);
-        query.setParameter("train_number", trainNumber);
+        query.setParameter(TRAIN_NUMBER, trainNumber);
 
         return query.getResultList();
     }

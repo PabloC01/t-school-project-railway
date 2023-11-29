@@ -15,7 +15,9 @@ public class TicketEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     private UserEntity userByUserId;
     @ManyToOne
-    @JoinColumns({@JoinColumn(name = "seat_number", referencedColumnName = "number", nullable = false), @JoinColumn(name = "wagon_number", referencedColumnName = "wagon_number", nullable = false), @JoinColumn(name = "train_number", referencedColumnName = "train_number", nullable = false)})
+    @JoinColumn(name = "seat_number", referencedColumnName = "number", nullable = false)
+    @JoinColumn(name = "wagon_number", referencedColumnName = "wagon_number", nullable = false)
+    @JoinColumn(name = "train_number", referencedColumnName = "train_number", nullable = false)
     private SeatEntity seat;
     @ManyToOne
     @JoinColumn(name = "schedule_id", referencedColumnName = "schedule_id", nullable = false)

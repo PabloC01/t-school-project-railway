@@ -16,7 +16,7 @@ public class TrainEntity {
     @Column(name = "train_id")
     private Integer trainId;
     @Basic
-    @Column(name = "number")
+    @Column(name = "number", unique = true)
     private Integer number;
     @OneToMany(mappedBy = "trainByNumber", cascade = CascadeType.ALL)
     private Collection<ScheduleEntity> schedulesByNumber;

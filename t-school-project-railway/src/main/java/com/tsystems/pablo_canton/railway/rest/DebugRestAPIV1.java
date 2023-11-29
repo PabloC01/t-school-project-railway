@@ -35,7 +35,7 @@ public class DebugRestAPIV1 {
     public DebugResponse helloWorldJson() {
         final var helloWorldStringFromBusinessService = debugBusinessService.getHelloWorld();
         final var resultString = HELLO_WORLD + (helloWorldStringFromBusinessService == null ? "" : helloWorldStringFromBusinessService);
-        return DebugResponse.builder().debugResponse(resultString).build();
+        return DebugResponse.builder().message(resultString).build();
     }
 
     @GetMapping("/stations")

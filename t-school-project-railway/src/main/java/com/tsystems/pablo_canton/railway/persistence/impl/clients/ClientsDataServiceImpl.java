@@ -115,7 +115,7 @@ public class ClientsDataServiceImpl implements IClientsDataService {
     @Override
     public UserEntity loadUserByUsername(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found" + username));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found " + username));
     }
 
     @Override

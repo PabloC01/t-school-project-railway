@@ -25,7 +25,8 @@ public class SeatEntity {
     @Column(name = "description")
     private String description;
     @ManyToOne
-    @JoinColumns({@JoinColumn(name = "wagon_number", referencedColumnName = "wagon_number", nullable = false, insertable = false, updatable = false), @JoinColumn(name = "train_number", referencedColumnName = "train_number", nullable = false, insertable = false, updatable = false)})
+    @JoinColumn(name = "wagon_number", referencedColumnName = "wagon_number", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "train_number", referencedColumnName = "train_number", nullable = false, insertable = false, updatable = false)
     private WagonEntity wagon;
     @OneToMany(mappedBy = "seat", cascade = CascadeType.ALL)
     private Collection<TicketEntity> tickets;

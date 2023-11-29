@@ -9,6 +9,6 @@ import lombok.*;
 @Builder
 public class DebugResponse {
 
-    private String debugResponse;
+    private String message;
 
 }

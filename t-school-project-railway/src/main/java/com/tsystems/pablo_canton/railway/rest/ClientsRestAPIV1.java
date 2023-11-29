@@ -4,6 +4,7 @@ import com.tsystems.pablo_canton.railway.business.api.clients.IClientsBusinessSe
 import com.tsystems.pablo_canton.railway.business.dto.*;
 import com.tsystems.pablo_canton.railway.setup.security.TokenManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -34,6 +35,7 @@ public class ClientsRestAPIV1 {
     }
 
     @PostMapping(value = "/ticket")
+    @ResponseStatus(HttpStatus.CREATED)
     public TicketDTO createTicket(@RequestBody BuyTicketInfo ticket){
         TicketDTO ticketDTO = new TicketDTO();
 
@@ -48,7 +50,7 @@ public class ClientsRestAPIV1 {
     }
 
     @GetMapping(value = "/wagons", params = {"train_number", "schedule_id"})
-    public List<WagonInfo> searchEmptySeats(@RequestParam("train_number") Integer trainNumber, @RequestParam("schedule_id") Integer scheduleId){
+    public List<WagonInfo> searchWagonsInfo(@RequestParam("train_number") Integer trainNumber, @RequestParam("schedule_id") Integer scheduleId){
         return clientsBusinessService.getWagonsInfo(trainNumber, scheduleId);
     }
 

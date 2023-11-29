@@ -25,7 +25,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, TokenAuthFilter filter) throws Exception {
         http
             .cors(Customizer.withDefaults())
-            .csrf(csrf -> csrf.disable())
+            .csrf(csrf -> csrf.ignoringRequestMatchers("/**"))
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/v1/clients/**").hasAuthority("C")
                     .requestMatchers("/v1/employee/**").hasAuthority("E")

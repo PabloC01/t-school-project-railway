@@ -3,6 +3,7 @@ package com.tsystems.pablo_canton.railway.rest;
 import com.tsystems.pablo_canton.railway.business.api.employees.IEmployeesBusinessService;
 import com.tsystems.pablo_canton.railway.business.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,16 +36,19 @@ public class EmployeesRestAPIV1 {
     }
 
     @PostMapping(value = "/stations")
+    @ResponseStatus(HttpStatus.CREATED)
     public StationDTO createStation(@RequestBody StationDTO station){
         return employeesBusinessService.createStation(station);
     }
 
     @PostMapping(value = "/schedules")
+    @ResponseStatus(HttpStatus.CREATED)
     public ScheduleDTO createSchedule(@RequestBody ScheduleDTO schedule){
         return employeesBusinessService.createSchedule(schedule);
     }
 
     @PostMapping(value = "/trains")
+    @ResponseStatus(HttpStatus.CREATED)
     public TrainDTO createTrain(@RequestBody TrainWagons train){
         return employeesBusinessService.createTrain(train);
     }
