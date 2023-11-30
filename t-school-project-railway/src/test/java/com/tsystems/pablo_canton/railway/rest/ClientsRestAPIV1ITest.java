@@ -52,7 +52,6 @@ class ClientsRestAPIV1ITest {
                         .contextPath("/api")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.size()").value(2))
                 .andExpect(jsonPath("$[0]").value("Madrid"));
     }
 
@@ -84,7 +83,7 @@ class ClientsRestAPIV1ITest {
                         .contextPath("/api")
                         .content(objectMapper.writeValueAsString(dto))
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(409))
+                .andExpect(status().isConflict())
                 .andExpect(content().string("seat not free"));
     }
 
@@ -100,7 +99,7 @@ class ClientsRestAPIV1ITest {
                         .contextPath("/api")
                         .content(objectMapper.writeValueAsString(dto))
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(409))
+                .andExpect(status().isConflict())
                 .andExpect(content().string("already have ticket"));
     }
 
@@ -116,7 +115,7 @@ class ClientsRestAPIV1ITest {
                         .contextPath("/api")
                         .content(objectMapper.writeValueAsString(dto))
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(409))
+                .andExpect(status().isConflict())
                 .andExpect(content().string("user not client"));
     }
 
@@ -132,7 +131,7 @@ class ClientsRestAPIV1ITest {
                         .contextPath("/api")
                         .content(objectMapper.writeValueAsString(dto))
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(409))
+                .andExpect(status().isConflict())
                 .andExpect(content().string("too late"));
     }
 

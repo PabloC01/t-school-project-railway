@@ -5,7 +5,6 @@ import jakarta.persistence.Id;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 @Data
 public class WagonEntityPK implements Serializable {
@@ -15,22 +14,4 @@ public class WagonEntityPK implements Serializable {
     @Column(name = "train_number")
     @Id
     private Integer trainNumber;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        WagonEntityPK that = (WagonEntityPK) o;
-
-        if (!Objects.equals(wagonNumber, that.wagonNumber)) return false;
-        return Objects.equals(trainNumber, that.trainNumber);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = wagonNumber != null ? wagonNumber.hashCode() : 0;
-        result = 31 * result + (trainNumber != null ? trainNumber.hashCode() : 0);
-        return result;
-    }
 }
