@@ -1,0 +1,36 @@
+version: "3"
+services:
+  db:
+    image: "postgres"
+    container_name: "postgres"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=railway
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+      - ./t-school-project-railway-be/src/main/resources/db/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - ./t-school-project-railway-be/src/main/resources/db/data_dev.sql:/docker-entrypoint-initdb.d/fill_tables.sql
+
+  backend:
+    image: "railway-be"
+    container_name: "backend"
+    restart: on-failure
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/railway
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=root
+
+  frontend:
+    image: "railway-fe"
+    container_name: "frontend"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
