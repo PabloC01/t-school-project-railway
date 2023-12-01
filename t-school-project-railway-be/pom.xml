@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.tsystems</groupId>
-    <artifactId>t-school-project-railway</artifactId>
+    <artifactId>t-school-project-railway-be</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>t-school-project-railway</name>
     <description>t-school-project-railway</description>
