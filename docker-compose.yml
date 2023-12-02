@@ -15,7 +15,7 @@ services:
       - ./t-school-project-railway-be/src/main/resources/db/data_dev.sql:/docker-entrypoint-initdb.d/fill_tables.sql
 
   backend:
-    image: "railway-be"
+    build: ./t-school-project-railway-be
     container_name: "backend"
     restart: on-failure
     ports:
@@ -28,7 +28,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=root
 
   frontend:
-    image: "railway-fe"
+    build: ./railway-fe
     container_name: "frontend"
     ports:
       - "3000:3000"
