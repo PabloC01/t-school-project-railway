@@ -9,12 +9,14 @@ import com.tsystems.pablo_canton.railway.persistence.jpa.entities.UserEntity;
 import com.tsystems.pablo_canton.railway.persistence.jpa.repository.UserRepository;
 import com.tsystems.pablo_canton.railway.setup.exception.UsernameAlreadyExistsException;
 import com.tsystems.pablo_canton.railway.setup.security.TokenManager;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Authorization", description = "Authorization management")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/auth")

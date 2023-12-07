@@ -3,6 +3,7 @@ package com.tsystems.pablo_canton.railway.rest;
 import com.tsystems.pablo_canton.railway.business.api.clients.IClientsBusinessService;
 import com.tsystems.pablo_canton.railway.business.dto.*;
 import com.tsystems.pablo_canton.railway.setup.security.TokenManager;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Tag(name = "Clients", description = "Clients operations management")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/clients")
@@ -36,7 +38,7 @@ public class ClientsRestAPIV1 {
 
     @PostMapping(value = "/ticket")
     @ResponseStatus(HttpStatus.CREATED)
-    public TicketDTO createTicket(@RequestBody BuyTicketInfo ticket){
+    public String createTicket(@RequestBody BuyTicketInfo ticket){
         TicketDTO ticketDTO = new TicketDTO();
 
         String username = tokenManager.getUsernameByToken(ticket.getToken());
@@ -46,7 +48,9 @@ public class ClientsRestAPIV1 {
         ticketDTO.setSeat(ticket.getSeat());
         ticketDTO.setSchedule(ticket.getSchedule());
 
-        return clientsBusinessService.createTicket(ticketDTO);
+        TicketDTO createdTicket = clientsBusinessService.createTicket(ticketDTO);
+
+        return "Ticket created successfully, ticket id: " + createdTicket.getTicketId();
     }
 
     @GetMapping(value = "/wagons", params = {"train_number", "schedule_id"})

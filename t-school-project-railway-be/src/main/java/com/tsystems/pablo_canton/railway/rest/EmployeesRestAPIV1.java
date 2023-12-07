@@ -2,12 +2,14 @@ package com.tsystems.pablo_canton.railway.rest;
 
 import com.tsystems.pablo_canton.railway.business.api.employees.IEmployeesBusinessService;
 import com.tsystems.pablo_canton.railway.business.dto.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Employees", description = "Employees operations management")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/employee")

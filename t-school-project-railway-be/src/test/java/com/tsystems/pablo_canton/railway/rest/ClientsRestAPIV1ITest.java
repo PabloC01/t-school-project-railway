@@ -67,8 +67,7 @@ class ClientsRestAPIV1ITest {
                         .contextPath("/api")
                         .content(objectMapper.writeValueAsString(dto))
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.user.username").value("test.client"));
+                .andExpect(status().isCreated());
     }
 
     @Test

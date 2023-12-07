@@ -29,7 +29,7 @@ public class WebSecurityConfig {
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/v1/clients/**").hasAuthority("C")
                     .requestMatchers("/v1/employee/**").hasAuthority("E")
-                    .requestMatchers("/v1/auth/**").permitAll()
+                    .requestMatchers("/v1/auth/**", "/swagger-ui/**", "/v3/**").permitAll()
                     .anyRequest().authenticated())
             .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
